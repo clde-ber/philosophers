@@ -1,3 +1,57 @@
-#include <pthread.h>
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
+/*   Updated: 2021/08/22 16:18:20 by clde-ber         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
+
+# define TRUE 0
+# define FALSE 1
+# define ERROR -1
+# define INT_MIN -2147483648
+# define INT_MAX 2147483647
+
+# include <pthread.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <stdlib.h>
+
+typedef struct s_philo
+{
+    unsigned long philo_count;
+    unsigned long philo_number;
+    unsigned long time_to_die;
+    unsigned long time_to_eat;
+    unsigned long time_to_sleep;
+    unsigned long nb_of_times_eat;
+    int           odd_or_even;
+    unsigned long time;
+    unsigned long seventies_value;
+    unsigned long eat_count;
+    int           change_state;
+    int           state;
+    unsigned long count;
+    unsigned long ret;
+    pthread_mutex_t mutex;
+}           t_philo;
+
+void	ft_putstr_fd(char *s, int fd);
+int	ft_isdigit(char c);
+int	ft_atoi(const char *str);
+void    init_struct_philo(t_philo *philo);
+int print_error();
+void    *start_routine(void *philo);
+int    take_fork(t_philo *philo, unsigned long philo_number);
+int    wait_for_thread(t_philo *philo, unsigned long time);
+void    start_threads(t_philo *philo);
+
+#endif

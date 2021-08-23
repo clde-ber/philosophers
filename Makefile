@@ -2,9 +2,10 @@
 
 NAME	=	philo
 LIST	=	philosophers \
+			utils \
 
 HEADER	=	-I includes/
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -pthread -g3 -fsanitize=address
 CC		=	clang
 
 S_DIR	=	srcs/
@@ -32,14 +33,14 @@ DEPS	= $(addsuffix $(D_SUFF), $(LIST_D))
 
 $(O_DIR)%.o	:	$(S_DIR)%.c
 				$(DIR_O)
-				$(CC) $(HEADER) -c $< -o $@
+				$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
 
 $(D_DIR)%.d	:	$(O_DIR)%.o
 				$(DIR_D)
 				$(CC) $(HEADER) $< -MMD $@
 
 $(NAME)	:		$(OBJS)
-				$(CC) $(LIST_O) -o $(NAME)
+				$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 all	:			$(NAME)
 
