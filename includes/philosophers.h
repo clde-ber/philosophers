@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/08/22 16:18:20 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/08/25 11:41:39 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ typedef struct s_data
     unsigned long time_to_eat;
     unsigned long time_to_sleep;
     unsigned long nb_of_times_eat;
-    unsigned long time;
-    unsigned long eat_count;
+    int forks;
     pthread_mutex_t mutex;
 }           t_data;
 
@@ -45,6 +44,8 @@ typedef struct s_philo
     int           change_state;
     int           state;
     unsigned long ret;
+    unsigned long time;
+    unsigned long eat_count;
     t_data        *data;
 }           t_philo;
 

@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:35:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/08/23 12:07:20 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/08/25 11:46:33 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,36 +25,41 @@ int print_error()
     return (ERROR);
 }
 
-int get_time(t_philo *philo)
+unsigned long get_time(t_philo *philo)
 {
     struct timeval tv;
-    int ret;
+    unsigned long ret;
 
     ret = 0;
+    (void)philo;
     if (gettimeofday(&tv, NULL) == -1)
         return (print_error());
-    ret = tv.tv_usec / 1000;
-    philo->data->time += ret;
+    if (tv.tv_usec / 1000 > 0)
+        ret = tv.tv_usec / 1000;
     return (ret);
 }
 
 int print_message(unsigned long time, t_philo *philo, unsigned long count)
 {
+    (void)count;
     if (time == 0 || time % philo->data->time_to_die == 0)
     {
-        printf("%lu milliseconds : philosopher %lu has taken a fork\n", philo->data->time, count);
-        printf("%lu milliseconds : philosopher %lu is eating\n", philo->data->time, count);
-        philo->data->eat_count++;
+        printf("%lu milliseconds : philosopher %lu has taken a fork\n", philo->time, philo->id);
+        printf("%lu milliseconds : philosopher %lu is eating\n", philo->time, philo->id);
+        philo->time += time;
+        philo->eat_count++;
         return (TRUE);
     }
     if (time % philo->data->time_to_eat == 0)
     {
-        printf("%lu milliseconds : philosopher %lu is sleeping\n", philo->data->time, count);
+        printf("%lu milliseconds : philosopher %lu is sleeping\n", philo->time, philo->id);
+        philo->time += time;
         return (TRUE);
     }
     if (time % philo->data->time_to_sleep == 0)
     {
-        printf("%lu milliseconds : philosopher %lu is thinking\n", philo->data->time, count);
+        printf("%lu milliseconds : philosopher %lu is thinking\n", philo->time, philo->id);
+        philo->time += time;
         return (TRUE);
     }
     return (FALSE);
@@ -62,9 +67,11 @@ int print_message(unsigned long time, t_philo *philo, unsigned long count)
 
 void    *philo_routine(t_philo *philo)
 {
-    while (philo->data->eat_count < philo->data->nb_of_times_eat)
+    int ret;
+
+    while (philo->eat_count < philo->data->nb_of_times_eat)
     {
-        print_message(get_time(philo), philo, philo->data->philo_number);
+        ret = print_message(get_time(philo), philo, philo->data->philo_number);
         usleep(1000);
     }
     return (NULL);
@@ -75,9 +82,10 @@ void    *start_routine(void *philo)
     t_philo *phil;
 
     phil = (t_philo *)philo;
-    pthread_mutex_lock(&phil->data->mutex);
     philo_routine(phil);
-    phil->id++;
+    phil->data->forks = 0;
+    pthread_mutex_lock(&phil->data->mutex);
+    phil->data->forks = 1;
     pthread_mutex_unlock(&phil->data->mutex);
     return (TRUE);
 }
@@ -107,6 +115,7 @@ int    start_threads(t_philo *philo, unsigned long philo_number)
             return (print_error());
         i++;
     }
+    while (1 && philo->eat_count < philo->data->nb_of_times_eat);
     return (TRUE);
 }
 
@@ -125,7 +134,7 @@ int main(int ac, char **av)
 {
     t_philo *philo;
     t_data  *infos;
-    int     i;
+    unsigned long     i;
 
     i = 0;
     philo = NULL;
@@ -136,19 +145,21 @@ int main(int ac, char **av)
         return (print_error());
     else
     {
-        infos->philo_number = ft_atoi(av[1]);
-        infos->time_to_die = ft_atoi(av[2]);
-        infos->time_to_eat = ft_atoi(av[3]);
-        infos->time_to_sleep = ft_atoi(av[4]);
+        memset(infos, 0, sizeof(t_data));
+        infos->philo_number = (unsigned long)ft_atoi(av[1]);
+        infos->time_to_die = (unsigned long)ft_atoi(av[2]);
+        infos->time_to_eat = (unsigned long)ft_atoi(av[3]);
+        infos->time_to_sleep = (unsigned long)ft_atoi(av[4]);
         if (av[5])
-            infos->nb_of_times_eat = ft_atoi(av[5]);
-        philo = malloc(sizeof(t_philo) * ft_atoi(av[1]));
+            infos->nb_of_times_eat = (unsigned long)ft_atoi(av[5]);
+        philo = malloc(sizeof(t_philo) * (unsigned long)ft_atoi(av[1]));
         memset(philo, 0, sizeof(t_philo) * infos->philo_number);
         if (!philo)
             print_error();
-        while (i < ft_atoi(av[1]))
+        while (i < (unsigned long)ft_atoi(av[1]))
         {
             philo[i].data = infos;
+            philo[i].id = i;
             i++;
         }
         i = 0;
