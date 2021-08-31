@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/08/27 21:04:39 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/08/30 10:29:51 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ typedef struct s_data
     unsigned long nb_of_times_eat;
     unsigned long forks;
     int           died;
-    unsigned long start_time;
-    unsigned long time;
+    suseconds_t start_time;
+    suseconds_t time;
     pthread_mutex_t mutex;
     pthread_mutex_t *forks_mutex;
     pthread_t       *threads;
@@ -62,7 +62,7 @@ void    init_struct_philo(t_philo *philo);
 int print_error();
 void    *start_routine(void *philo);
 int    take_fork(t_philo *philo, unsigned long philo_number);
-int    wait_for_thread(t_philo *philo, unsigned long time);
+int    wait_for_thread(t_philo *philo, suseconds_t time);
 int    start_threads(t_philo *philo, unsigned long philo_number);
 
 #endif
