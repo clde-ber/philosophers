@@ -122,11 +122,7 @@ int    start_threads(t_philo *philo, unsigned long philo_number)
         i++;
     }
     i = 0;
-    while (i < 10000)
-    {
-        usleep(1000);
-        i++;
-    }
+    while (!philo->data->died);
     return (TRUE);
 }
 
@@ -204,7 +200,6 @@ int main(int ac, char **av)
         if (!philo)
             print_error();
         memset(philo, 0, sizeof(t_philo) * infos->philo_number);
-        printf("avant\n");
         shared_data(infos, av);
         while (i < (unsigned long)ft_atoi(av[1]))
         {
@@ -213,10 +208,7 @@ int main(int ac, char **av)
             pthread_mutex_init(&philo->data->forks_mutex[i], NULL);
             i++;
         }
-        printf("apres\n");
-  //      pthread_mutex_init(&(philo[i].data->mutex), NULL);
         start_threads(philo, philo->data->philo_number);
-  //      pthread_mutex_destroy(&(philo[i].data->mutex));
         i = 0;
         while (i < (unsigned long)ft_atoi(av[1]))
         {
