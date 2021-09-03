@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/08/30 10:29:51 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/03 13:42:17 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_philo
     int           state;
     unsigned long ret;
     unsigned long eat_count;
+    unsigned long last_meal;
     unsigned long right;
     unsigned long left;
     t_data        *data;
