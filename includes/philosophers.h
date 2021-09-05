@@ -37,6 +37,7 @@ typedef struct s_data
     int           died;
     suseconds_t start_time;
     suseconds_t time;
+    suseconds_t chrono;
     pthread_mutex_t mutex;
     pthread_mutex_t *forks_mutex;
     pthread_t       *threads;
