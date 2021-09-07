@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:35:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/07 13:57:02 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/07 15:39:11 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,16 @@ suseconds_t get_time(t_philo *philo)
 
 int    philo_eat(t_philo *philo, suseconds_t time)
 {
+    if (philo->id % 2)
+    {
+        pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
+        pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
+    }
+    else
+    {
+        pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
+        pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
+    }
     if (philo->last_meal > philo->data->time_to_die)
     {
         pthread_mutex_lock(&philo->data->mutex);
@@ -43,8 +53,6 @@ int    philo_eat(t_philo *philo, suseconds_t time)
         pthread_mutex_unlock(&philo->data->mutex);
         philo->data->died = 1;
     }
-    pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
-    pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
     pthread_mutex_lock(&philo->data->mutex);
     printf("%lu milliseconds : philosopher %lu has taken a fork\n", philo->data->time, philo->id);
     printf("%lu milliseconds : philosopher %lu is eating\n", philo->data->time, philo->id);
@@ -80,8 +88,16 @@ void    *philo_routine(t_philo *philo)
     {
         philo_eat(philo, philo->data->time);
         wait_for_thread(philo, (suseconds_t)philo->data->time_to_eat);
-        pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);
-        pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
+        if (philo->id % 2)
+        {
+            pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
+            pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);
+        }
+        else
+        {
+            pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);
+            pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
+        }
         philo_sleep(philo, philo->data->time);
         wait_for_thread(philo, (suseconds_t)philo->data->time_to_sleep);
         philo_think(philo, philo->data->time);
@@ -134,17 +150,14 @@ int    wait_for_thread(t_philo *philo, suseconds_t time)
 {
     unsigned long timeofday;
     suseconds_t tps;
-    suseconds_t limit;
 
-    (void)philo;
     timeofday = 0;
-    tps = 1000;
-    limit = time * 1000;
-    while (tps < limit)
+    tps = 0;
+    while (tps < time)
     {
         if (usleep(1000) == -1)
             return (print_error());
-        tps += tps;
+        tps++;
     }
     timeofday = time;
     philo->data->time += timeofday;
@@ -155,17 +168,13 @@ void    init_philo(t_philo *philo, t_data *infos, unsigned long i)
 {
     philo->data = infos;
     philo->id = i + 1;
-    if (philo->id % 2)
-        philo->odd_or_even = 0;
-    else
-        philo->odd_or_even = 1;
     philo->eat_count = 0;
-    philo->right = philo->id + 1;
-    if (philo->right >= philo->data->philo_number)
+    philo->right = i + 1;
+    philo->left = i - 1;
+    if (i == 0)
+        philo->left = philo->data->philo_number - 1;
+    if (i == philo->data->philo_number - 1)
         philo->right = 0;
-    philo->left = philo->id - 1;
-    if (philo->left <= 0)   
-    philo->left = philo->data->philo_number - 1;
 }
 
 suseconds_t get_start_time()
@@ -229,7 +238,7 @@ int main(int ac, char **av)
         i = 0;
         while (i < (unsigned long)ft_atoi(av[1]))
         {
-            pthread_mutex_destroy(&(philo[i].data->forks_mutex[i]));
+            pthread_mutex_destroy((&philo->data->forks_mutex[i]));
             i++;
         }
     }
