@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/07 15:37:32 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/07 16:56:07 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_data
     unsigned long time_to_eat;
     unsigned long time_to_sleep;
     unsigned long nb_of_times_eat;
+    unsigned long time_to_think;
     unsigned long forks;
     int           died;
     suseconds_t start_time;
@@ -55,6 +56,7 @@ typedef struct s_philo
     unsigned long right;
     unsigned long left;
     t_data        *data;
+    suseconds_t counter;
 }           t_philo;
 
 void	ft_putstr_fd(char *s, int fd);
