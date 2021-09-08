@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:35:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/07 17:37:46 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/08 08:53:44 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void    *philo_routine(t_philo *philo)
         philo_sleep(philo, philo->data->time);
         wait_for_thread(philo, philo->data->time_to_sleep);
         philo_think(philo, philo->data->time);
-        wait_for_thread(philo, philo->data->time_to_think - 1000);
+    //    wait_for_thread(philo, philo->data->time_to_think - 1000);
     }
     return (NULL);
 }
