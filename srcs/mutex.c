@@ -3,11 +3,11 @@
 int destroy_mutexes(unsigned long i, t_philo *philo)
 {
     if (pthread_mutex_destroy(&philo->data->mutex))
-        return (print_error("Error in attempt to destroy mutex\n"));
+        return (print_error("Error in attempt to destroy mutex\n", philo));
     while (i < philo->data->philo_number)
     {
         if (pthread_mutex_destroy(&philo->data->forks_mutex[i]))
-            return (print_error("Error in attempt to destroy mutex\n"));
+            return (print_error("Error in attempt to destroy mutex\n", philo));
         i++;
     }
     return (TRUE);

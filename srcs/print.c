@@ -19,9 +19,13 @@ void    print_msg(t_philo *philo, char *msg)
     printf(msg, philo->data->time, philo->id);
 }
 
-int print_error(char *msg)
+int print_error(char *msg, t_philo *philo)
 {
+    if (philo)
+        pthread_mutex_lock(&philo->data->mutex);
     ft_putstr_fd(msg, 2);
     ft_putstr_fd("\n", 2);
+    if (philo)
+        pthread_mutex_unlock(&philo->data->mutex);
     return (ERROR);
 }

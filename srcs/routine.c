@@ -2,13 +2,14 @@
 
 int    philo_eat(t_philo *philo)
 {
-    if (get_time(philo) > philo->last_meal + philo->data->time_to_die)
+    if (get_time(philo) > philo->last_meal + philo->data->time_to_die || \
+    philo->eat_count > philo->data->nb_of_times_eat)
     {
         pthread_mutex_lock(&philo->data->mutex);
         print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
         pthread_mutex_unlock(&philo->data->mutex);
         philo->data->died = 1;
-        destroy_mutexes(0, philo);
+        return (FALSE);
     }
     take_different_forks(philo);
     pthread_mutex_lock(&philo->data->mutex);
@@ -40,7 +41,7 @@ int    philo_think(t_philo *philo)
 
 void    *philo_routine(t_philo *philo)
 {
-    while (!philo->data->died || philo->eat_count < philo->data->nb_of_times_eat)
+    while (!philo->data->died && philo->eat_count < philo->data->nb_of_times_eat)
     {
         philo_eat(philo);
         wait_action(philo, philo->data->time_to_eat);
@@ -49,6 +50,7 @@ void    *philo_routine(t_philo *philo)
         wait_action(philo, philo->data->time_to_sleep);
         philo_think(philo);
     }
+    destroy_mutexes(0, philo);
     return (NULL);
 }
 

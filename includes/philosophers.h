@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/08 14:12:45 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/08 14:58:01 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int    start_threads(t_philo *philo, unsigned long philo_number);
 
 void	ft_putstr_fd(char *s, int fd);
 void    print_msg(t_philo *philo, char *msg);
-int print_error(char *msg);
+int print_error(char *msg, t_philo *philo);
 
 /*
 **  time

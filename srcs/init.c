@@ -6,11 +6,11 @@ int    init_structs(t_data **infos, t_philo **philo, char **args)
     memset(*infos, 0, sizeof(t_data));
     (*infos)->forks_mutex = malloc(sizeof(pthread_mutex_t) * ft_atoi(args[1]));
     if (!((*infos)->forks_mutex))
-        return (print_error("Malloc error\n"));
+        return (print_error("Malloc error\n", NULL));
     memset((*infos)->forks_mutex, 0, sizeof(pthread_mutex_t) * ft_atoi(args[1]));
     *philo = malloc(sizeof(t_philo) * ft_atoi(args[1]));
     if (!*philo)
-        return (print_error("Malloc error\n"));
+        return (print_error("Malloc error\n", NULL));
     memset(*philo, 0, sizeof(t_philo) * ft_atoi(args[1]));
     return (TRUE);
 }
@@ -27,7 +27,7 @@ int    shared_data(t_data *infos, char **av)
     infos->start_time = get_start_time();
     infos->threads = malloc(sizeof(pthread_t) * infos->philo_number);
     if (!infos->threads)
-        print_error("Malloc error\n");
+        print_error("Malloc error\n", NULL);
     return (TRUE);
 }
 
@@ -52,19 +52,19 @@ int    create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo)
         memset(&philo[i], 0, sizeof(t_philo));
         init_philo(&philo[i], infos, i);
         if (pthread_mutex_init(&philo->data->forks_mutex[i], NULL))
-            return (print_error("Error in attempt to init mutex\n"));
+            return (print_error("Error in attempt to init mutex\n", NULL));
         i++;
     }
     if (pthread_mutex_init(&philo->data->mutex, NULL))
-        return (print_error("Error in attempt to init mutex\n"));
+        return (print_error("Error in attempt to init mutex\n", NULL));
     start_threads(philo, philo->data->philo_number);
     if (pthread_mutex_destroy(&philo->data->mutex))
-        return (print_error("Error in attempt to destroy mutex\n"));
+        return (print_error("Error in attempt to destroy mutex\n", NULL));
     i = 0;
     while (i < infos->philo_number)
     {
         if (pthread_mutex_destroy(&philo->data->forks_mutex[i]))
-            return (print_error("Error in attempt to destroy mutex\n"));
+            return (print_error("Error in attempt to destroy mutex\n", NULL));
         i++;
     }
     return (TRUE);

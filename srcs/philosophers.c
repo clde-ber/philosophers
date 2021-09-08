@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:35:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/08 14:16:14 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/08 14:59:44 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int    start_threads(t_philo *philo, unsigned long philo_number)
     {
         ret = pthread_create(&philo->data->threads[i], NULL, start_routine, (void *)&philo[i]);
         if (ret)
-            return (print_error("Error in attempt to create thread\n"));
+            return (print_error("Error in attempt to create thread\n", philo));
         i++;
     }
     i = 0;
@@ -30,10 +30,10 @@ int    start_threads(t_philo *philo, unsigned long philo_number)
     {
         ret = pthread_detach(philo->data->threads[i]);
         if (ret)
-            return (print_error("Error in attempt to detach thread\n"));
+            return (print_error("Error in attempt to detach thread\n", philo));
         i++;
     }
-    while (!philo->data->died);
+    while (!philo->data->died && philo->eat_count < philo->data->nb_of_times_eat);
     return (TRUE);
 }
 
@@ -47,7 +47,7 @@ int main(int ac, char **av)
     philo = NULL;
     infos = NULL;
     if (ac < 5)
-        return (print_error("Error in arguments\n"));
+        return (print_error("Error in arguments\n", NULL));
     else
     {
         init_structs(&infos, &philo, av);
