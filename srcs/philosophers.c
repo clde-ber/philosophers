@@ -3,122 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:35:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/08 08:53:44 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/08 14:16:14 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-static unsigned long count = 1;
-
-void    init_struct_philo(t_philo *philo)
-{
-    memset(philo, 0, sizeof(t_philo));
-}
-
-int print_error()
-{
-    ft_putstr_fd("Error\n", 2);
-    return (ERROR);
-}
-
-suseconds_t get_time(t_philo *philo)
-{
-    struct timeval tv;
-
-    if (gettimeofday(&tv, NULL) == -1)
-        return (print_error());
-    return ((tv.tv_sec * 1000 + tv.tv_usec / 1000) - philo->data->start_time);
-}
-
-int    philo_eat(t_philo *philo, suseconds_t time)
-{
-    (void)time;
-    if (philo->id % 2)
-    {
-        pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
-        pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
-    }
-    else
-    {
-        pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
-        pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
-    }
-    if ((unsigned long)get_time(philo) > philo->last_meal + philo->data->time_to_die)
-    {
-        pthread_mutex_lock(&philo->data->mutex);
-        printf("%lu milliseconds : philosopher %lu died\n", philo->data->time, philo->id);
-        pthread_mutex_unlock(&philo->data->mutex);
-        philo->data->died = 1;
-    }
-    pthread_mutex_lock(&philo->data->mutex);
-    printf("%lu milliseconds : philosopher %lu has taken a fork\n", philo->data->time, philo->id);
-    printf("%lu milliseconds : philosopher %lu is eating\n", philo->data->time, philo->id);
-    philo->last_meal = (unsigned long)get_time(philo);
-    philo->eat_count++;
-    pthread_mutex_unlock(&philo->data->mutex);
-    return (TRUE);
-}
-
-int    philo_sleep(t_philo *philo, suseconds_t time)
-{
-    (void)time;
-    pthread_mutex_lock(&philo->data->mutex);
-    printf("%lu milliseconds : philosopher %lu is sleeping\n", philo->data->time, philo->id);
-    pthread_mutex_unlock(&philo->data->mutex);
-    return (TRUE);
-}
-
-int    philo_think(t_philo *philo, suseconds_t time)
-{
-    (void)time;
-    pthread_mutex_lock(&philo->data->mutex);
-    printf("%lu milliseconds : philosopher %lu is thinking\n", philo->data->time, philo->id);
-    pthread_mutex_unlock(&philo->data->mutex);
-    return (TRUE);
-}
-
-void    *philo_routine(t_philo *philo)
-{
-//    int ret;
-
-    while (!philo->data->died)
-    {
-        philo_eat(philo, philo->data->time);
-        wait_for_thread(philo, philo->data->time_to_eat);
-        if (philo->id % 2)
-        {
-            pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
-            pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);
-        }
-        else
-        {
-            pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);
-            pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
-        }
-        philo_sleep(philo, philo->data->time);
-        wait_for_thread(philo, philo->data->time_to_sleep);
-        philo_think(philo, philo->data->time);
-    //    wait_for_thread(philo, philo->data->time_to_think - 1000);
-    }
-    return (NULL);
-}
-
-void    *start_routine(void *philo)
-{
-   t_philo *phil;
-
-    phil = (t_philo *)philo;
-    pthread_mutex_lock(&phil->data->mutex);
-    printf("%lu milliseconds : philosopher %lu is alive\n", (unsigned long)phil->data->time, phil->id);
-    pthread_mutex_unlock(&phil->data->mutex);
-    philo_routine(philo);
-    (void)philo;
-    return (TRUE);
-}
 
 int    start_threads(t_philo *philo, unsigned long philo_number)
 {
@@ -130,84 +22,19 @@ int    start_threads(t_philo *philo, unsigned long philo_number)
     {
         ret = pthread_create(&philo->data->threads[i], NULL, start_routine, (void *)&philo[i]);
         if (ret)
-            return (print_error());
+            return (print_error("Error in attempt to create thread\n"));
         i++;
     }
-    count = 1;
     i = 0;
     while (i < philo_number)
     {
         ret = pthread_detach(philo->data->threads[i]);
         if (ret)
-            return (print_error());
+            return (print_error("Error in attempt to detach thread\n"));
         i++;
     }
-    i = 0;
     while (!philo->data->died);
     return (TRUE);
-}
-
-int    wait_for_thread(t_philo *philo, suseconds_t time)
-{
-    suseconds_t timeofday;
-    suseconds_t tps;
-    suseconds_t decalage;
-   // struct timeval tv;
-
-    timeofday = 0;
-    // tps = philo->data->time;
-    tps = get_time(philo);
-     if (philo->counter)
-         decalage = tps % philo->counter;
-     else
-        decalage = 0;
-  //  printf("tps %lu\n", tps);
-  //  printf("counter %lu\n", philo->counter);
-    while ((philo->data->time = get_time(philo)) < tps + time - decalage)
-    {
-        if (usleep(1000) == -1)
-            return (print_error());
-    }
-    philo->counter += time;
-    return (TRUE);
-}
-
-void    init_philo(t_philo *philo, t_data *infos, unsigned long i)
-{
-    philo->data = infos;
-    philo->id = i + 1;
-    philo->eat_count = 0;
-    philo->right = i + 1;
-    philo->left = i;
-    if (i == philo->data->philo_number - 1)
-    {
-        philo->right = i;
-        philo->left = 0;
-    }
-}
-
-suseconds_t get_start_time()
-{
-    struct timeval tv;
-
-    if (gettimeofday(&tv, NULL) == -1)
-        return (print_error());
-    return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
-void    shared_data(t_data *infos, char **av)
-{
-    infos->philo_number = (unsigned long)ft_atoi(av[1]);
-    infos->time_to_die = (unsigned long)ft_atoi(av[2]);
-    infos->time_to_eat = (unsigned long)ft_atoi(av[3]);
-    infos->time_to_sleep = (unsigned long)ft_atoi(av[4]);
-    infos->time_to_think = infos->time_to_die - infos->time_to_eat - infos->time_to_sleep;
-    if (av[5])
-        infos->nb_of_times_eat = (unsigned long)ft_atoi(av[5]);
-    infos->start_time = get_start_time();
-    infos->threads = malloc(sizeof(pthread_t) * infos->philo_number);
-    if (!infos->threads)
-        print_error();
 }
 
 int main(int ac, char **av)
@@ -218,39 +45,14 @@ int main(int ac, char **av)
 
     i = 0;
     philo = NULL;
-    infos = malloc(sizeof(t_data));
-    if (!infos)
-        return (print_error());
+    infos = NULL;
     if (ac < 5)
-        return (print_error());
+        return (print_error("Error in arguments\n"));
     else
     {
-        memset(infos, 0, sizeof(t_data));
-        infos->forks_mutex = malloc(sizeof(pthread_mutex_t) * infos->philo_number);
-        if (!(infos->forks_mutex))
-            print_error();
-        memset(infos->forks_mutex, 0, sizeof(pthread_mutex_t) * infos->philo_number);
-        philo = malloc(sizeof(t_philo) * (unsigned long)ft_atoi(av[1]));
-        if (!philo)
-            print_error();
-        memset(philo, 0, sizeof(t_philo) * infos->philo_number);
+        init_structs(&infos, &philo, av);
         shared_data(infos, av);
-        while (i < (unsigned long)ft_atoi(av[1]))
-        {
-            init_struct_philo(&philo[i]);
-            init_philo(&philo[i], infos, i);
-            pthread_mutex_init(&philo->data->forks_mutex[i], NULL);
-            i++;
-        }
-        pthread_mutex_init(&philo->data->mutex, NULL);
-        start_threads(philo, philo->data->philo_number);
-        pthread_mutex_destroy(&philo->data->mutex);
-        i = 0;
-        while (i < (unsigned long)ft_atoi(av[1]))
-        {
-            pthread_mutex_destroy((&philo->data->forks_mutex[i]));
-            i++;
-        }
+        create_forks_a_philo(0, infos, philo);
     }
     return (0);
 }

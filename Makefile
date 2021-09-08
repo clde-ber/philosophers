@@ -1,7 +1,12 @@
 .SUFFIXES:
 
 NAME	=	philo
-LIST	=	philosophers \
+LIST	=	routine \
+			init \
+			mutex \
+			philosophers \
+			print \
+			time \
 			utils \
 
 HEADER	=	-I includes/

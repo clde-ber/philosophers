@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/07 16:56:07 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/08 14:12:45 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ typedef struct s_data
     unsigned long time_to_sleep;
     unsigned long nb_of_times_eat;
     unsigned long time_to_think;
-    unsigned long forks;
     int           died;
-    suseconds_t start_time;
-    suseconds_t time;
-    suseconds_t chrono;
+    unsigned long start_time;
+    unsigned long time;
     pthread_mutex_t mutex;
     pthread_mutex_t *forks_mutex;
     pthread_t       *threads;
@@ -47,26 +45,69 @@ typedef struct s_data
 typedef struct s_philo
 {
     unsigned long id;
-    int           odd_or_even;
-    int           change_state;
-    int           state;
-    unsigned long ret;
-    unsigned long eat_count;
     unsigned long last_meal;
     unsigned long right;
     unsigned long left;
+    unsigned long time_cmp;
+    unsigned long eat_count;
     t_data        *data;
-    suseconds_t counter;
 }           t_philo;
 
+/*
+**  routine
+*/
+
+int    philo_eat(t_philo *philo);
+int    philo_sleep(t_philo *philo);
+int    philo_think(t_philo *philo);
+void    *philo_routine(t_philo *philo);
+void    *start_routine(void *philo);
+
+/*
+**  init
+*/
+
+int    init_structs(t_data **infos, t_philo **philo, char **args);
+int    shared_data(t_data *infos, char **av);
+void    init_philo(t_philo *philo, t_data *infos, unsigned long i);
+int    create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo);
+
+
+/*
+**  mutex
+*/
+
+int destroy_mutexes(unsigned long i, t_philo *philo);
+void    take_different_forks(t_philo *philo);
+void    release_different_forks(t_philo *philo);
+
+/*
+**  philosophers
+*/
+
+int    start_threads(t_philo *philo, unsigned long philo_number);
+
+/*
+**  print
+*/
+
 void	ft_putstr_fd(char *s, int fd);
+void    print_msg(t_philo *philo, char *msg);
+int print_error(char *msg);
+
+/*
+**  time
+*/
+
+unsigned long get_time(t_philo *philo);
+unsigned long get_start_time();
+int    wait_action(t_philo *philo, unsigned long time);
+
+/*
+**  utils
+*/
+
 int	ft_isdigit(char c);
 int	ft_atoi(const char *str);
-void    init_struct_philo(t_philo *philo);
-int print_error();
-void    *start_routine(void *philo);
-int    take_fork(t_philo *philo, unsigned long philo_number);
-int    wait_for_thread(t_philo *philo, suseconds_t time);
-int    start_threads(t_philo *philo, unsigned long philo_number);
 
 #endif
