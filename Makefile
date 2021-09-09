@@ -10,7 +10,7 @@ LIST	=	routine \
 			utils \
 
 HEADER	=	-I includes/
-CFLAGS	=	-Wall -Wextra -Werror -pthread -g3 -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -pthread -g3 #-fsanitize=address
 CC		=	clang
 
 S_DIR	=	srcs/

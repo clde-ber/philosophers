@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:35:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/08 14:59:44 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/09 08:46:01 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,19 @@ int    start_threads(t_philo *philo, unsigned long philo_number)
             return (print_error("Error in attempt to detach thread\n", philo));
         i++;
     }
-    while (!philo->data->died && philo->eat_count < philo->data->nb_of_times_eat);
+    while (1)
+    {
+        pthread_mutex_lock(&philo->data->die_mutex);
+        pthread_mutex_lock(&philo->data->count_mutex);
+        if (philo->data->died || philo->eat_count >= philo->nb_of_times_eat)
+        {
+            pthread_mutex_unlock(&philo->data->die_mutex);
+            pthread_mutex_unlock(&philo->data->count_mutex);
+            break ;
+        }
+        pthread_mutex_unlock(&philo->data->die_mutex);
+        pthread_mutex_unlock(&philo->data->count_mutex);
+    }
     return (TRUE);
 }
 
@@ -52,7 +64,8 @@ int main(int ac, char **av)
     {
         init_structs(&infos, &philo, av);
         shared_data(infos, av);
-        create_forks_a_philo(0, infos, philo);
+        create_forks_a_philo(0, infos, philo, av);
+        destroy_mutexes(0, philo);
     }
     return (0);
 }

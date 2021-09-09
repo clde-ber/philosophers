@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/08 14:58:01 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/09 08:45:57 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,26 @@
 
 typedef struct s_data
 {
-    unsigned long philo_number;
-    unsigned long time_to_die;
-    unsigned long time_to_eat;
-    unsigned long time_to_sleep;
-    unsigned long nb_of_times_eat;
-    unsigned long time_to_think;
     int           died;
     unsigned long start_time;
     unsigned long time;
     pthread_mutex_t mutex;
+    pthread_mutex_t       die_mutex;
+    pthread_mutex_t       time_mutex;
+    pthread_mutex_t       count_mutex;
+    pthread_mutex_t       lm_mutex;
     pthread_mutex_t *forks_mutex;
     pthread_t       *threads;
 }           t_data;
 
 typedef struct s_philo
 {
+    unsigned long philo_number;
+    unsigned long time_to_die;
+    unsigned long time_to_eat;
+    unsigned long time_to_sleep;
+    unsigned long nb_of_times_eat;
+    unsigned long time_to_think;
     unsigned long id;
     unsigned long last_meal;
     unsigned long right;
@@ -69,8 +73,8 @@ void    *start_routine(void *philo);
 
 int    init_structs(t_data **infos, t_philo **philo, char **args);
 int    shared_data(t_data *infos, char **av);
-void    init_philo(t_philo *philo, t_data *infos, unsigned long i);
-int    create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo);
+void    init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av);
+int    create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo, char **av);
 
 
 /*

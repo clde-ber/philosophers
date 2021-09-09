@@ -17,55 +17,53 @@ int    init_structs(t_data **infos, t_philo **philo, char **args)
 
 int    shared_data(t_data *infos, char **av)
 {
-    infos->philo_number = ft_atoi(av[1]);
-    infos->time_to_die = ft_atoi(av[2]);
-    infos->time_to_eat = ft_atoi(av[3]);
-    infos->time_to_sleep = ft_atoi(av[4]);
-    infos->time_to_think = infos->time_to_die - infos->time_to_eat - infos->time_to_sleep;
-    if (av[5])
-        infos->nb_of_times_eat = ft_atoi(av[5]);
     infos->start_time = get_start_time();
-    infos->threads = malloc(sizeof(pthread_t) * infos->philo_number);
+    infos->threads = malloc(sizeof(pthread_t) * ft_atoi(av[1]));
     if (!infos->threads)
         print_error("Malloc error\n", NULL);
     return (TRUE);
 }
 
-void    init_philo(t_philo *philo, t_data *infos, unsigned long i)
+void    init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
 {
+    philo->philo_number = ft_atoi(av[1]);
+    philo->time_to_die = ft_atoi(av[2]);
+    philo->time_to_eat = ft_atoi(av[3]);
+    philo->time_to_sleep = ft_atoi(av[4]);
+    philo->time_to_think = philo->time_to_die - philo->time_to_eat - philo->time_to_sleep;
+    if (av[5])
+        philo->nb_of_times_eat = ft_atoi(av[5]);
     philo->data = infos;
     philo->id = i + 1;
-    philo->eat_count = 0;
     philo->right = i + 1;
     philo->left = i;
-    if (i == philo->data->philo_number - 1)
+    if (i == philo->philo_number - 1)
     {
         philo->right = i;
         philo->left = 0;
     }
 }
 
-int    create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo)
+int    create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo, char **av)
 {
-    while (i < infos->philo_number)
+    while (i < (unsigned long)ft_atoi(av[1]))
     {
         memset(&philo[i], 0, sizeof(t_philo));
-        init_philo(&philo[i], infos, i);
+        init_philo(&philo[i], infos, i, av);
         if (pthread_mutex_init(&philo->data->forks_mutex[i], NULL))
-            return (print_error("Error in attempt to init mutex\n", NULL));
+            return (print_error("Error in attempt to init mutex\n", philo));
         i++;
     }
     if (pthread_mutex_init(&philo->data->mutex, NULL))
-        return (print_error("Error in attempt to init mutex\n", NULL));
-    start_threads(philo, philo->data->philo_number);
-    if (pthread_mutex_destroy(&philo->data->mutex))
-        return (print_error("Error in attempt to destroy mutex\n", NULL));
-    i = 0;
-    while (i < infos->philo_number)
-    {
-        if (pthread_mutex_destroy(&philo->data->forks_mutex[i]))
-            return (print_error("Error in attempt to destroy mutex\n", NULL));
-        i++;
-    }
+        return (print_error("Error in attempt to init mutex\n", philo));
+    if (pthread_mutex_init(&philo->data->die_mutex, NULL))
+        return (print_error("Error in attempt to init mutex\n", philo));
+    if (pthread_mutex_init(&philo->data->time_mutex, NULL))
+        return (print_error("Error in attempt to init mutex\n", philo));
+    if (pthread_mutex_init(&philo->data->count_mutex, NULL))
+        return (print_error("Error in attempt to init mutex\n", philo));
+    if (pthread_mutex_init(&philo->data->lm_mutex, NULL))
+        return (print_error("Error in attempt to init mutex\n", philo));
+    start_threads(philo, philo->philo_number);
     return (TRUE);
 }

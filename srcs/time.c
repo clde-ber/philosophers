@@ -28,8 +28,19 @@ int    wait_action(t_philo *philo, unsigned long time)
         diff = cumul_time % philo->time_cmp;
     else
         diff = 0;
-    while ((philo->data->time = get_time(philo)) < cumul_time + time - diff)
+    pthread_mutex_lock(&philo->data->time_mutex);
+    philo->data->time = get_time(philo);
+    pthread_mutex_unlock(&philo->data->time_mutex);
+    while (1)
     {
+        pthread_mutex_lock(&philo->data->time_mutex);
+        philo->data->time = get_time(philo);
+        if (philo->data->time > cumul_time + time - diff)
+        {
+            pthread_mutex_unlock(&philo->data->time_mutex);
+            break ;
+        }
+        pthread_mutex_unlock(&philo->data->time_mutex);
         if (usleep(1000) == -1)
             return (print_error("Error in waiting time\n", philo));
     }
