@@ -30,7 +30,6 @@ void    init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
     philo->time_to_die = ft_atoi(av[2]);
     philo->time_to_eat = ft_atoi(av[3]);
     philo->time_to_sleep = ft_atoi(av[4]);
-    philo->time_to_think = philo->time_to_die - philo->time_to_eat - philo->time_to_sleep;
     if (av[5])
         philo->nb_of_times_eat = ft_atoi(av[5]);
     philo->data = infos;

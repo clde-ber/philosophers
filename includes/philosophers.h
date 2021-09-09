@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/09 08:45:57 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/09 18:01:24 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_philo
     unsigned long time_to_eat;
     unsigned long time_to_sleep;
     unsigned long nb_of_times_eat;
-    unsigned long time_to_think;
     unsigned long id;
     unsigned long last_meal;
     unsigned long right;
@@ -89,6 +88,7 @@ void    release_different_forks(t_philo *philo);
 **  philosophers
 */
 
+void     free_structs(t_philo *philo);
 int    start_threads(t_philo *philo, unsigned long philo_number);
 
 /*

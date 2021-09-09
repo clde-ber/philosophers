@@ -6,11 +6,15 @@ int    philo_eat(t_philo *philo)
     philo->eat_count > philo->nb_of_times_eat)
     {
         pthread_mutex_lock(&philo->data->mutex);
-        print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
+        if (philo->eat_count <= philo->nb_of_times_eat)
+            print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
         pthread_mutex_unlock(&philo->data->mutex);
-        pthread_mutex_lock(&philo->data->die_mutex);
-        philo->data->died = 1;
-        pthread_mutex_unlock(&philo->data->die_mutex);
+        if (philo->eat_count <= philo->nb_of_times_eat)
+        {
+            pthread_mutex_lock(&philo->data->die_mutex);
+            philo->data->died = 1;
+            pthread_mutex_unlock(&philo->data->die_mutex);
+        }
         return (FALSE);
     }
     take_different_forks(philo);

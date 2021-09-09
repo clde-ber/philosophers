@@ -16,7 +16,10 @@ void	ft_putstr_fd(char *s, int fd)
 
 void    print_msg(t_philo *philo, char *msg)
 {
-    printf(msg, get_time(philo), philo->id);
+	if (!philo->data->died)
+	{
+    	printf(msg, get_time(philo), philo->id);
+	}
 }
 
 int print_error(char *msg, t_philo *philo)
