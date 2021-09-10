@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 14:17:25 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 16:11:32 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,92 +28,94 @@
 
 typedef struct s_data
 {
-    int           died;
-    int           end;
-    unsigned long start_time;
-    unsigned long time;
-    pthread_mutex_t mutex;
-    pthread_mutex_t       die_mutex;
-    pthread_mutex_t       end_mutex;
-    pthread_mutex_t       time_mutex;
-    pthread_mutex_t       count_mutex;
-    pthread_mutex_t       lm_mutex;
-    pthread_mutex_t *forks_mutex;
-    pthread_t       *threads;
-}           t_data;
+	int				died;
+	int				end;
+	unsigned long	start_time;
+	unsigned long	time;
+	pthread_mutex_t	mutex;
+	pthread_mutex_t	die_mutex;
+	pthread_mutex_t	end_mutex;
+	pthread_mutex_t	time_mutex;
+	pthread_mutex_t	count_mutex;
+	pthread_mutex_t	lm_mutex;
+	pthread_mutex_t	*forks_mutex;
+	pthread_t		*threads;
+}			t_data;
 
 typedef struct s_philo
 {
-    unsigned long philo_number;
-    unsigned long time_to_die;
-    unsigned long time_to_eat;
-    unsigned long time_to_sleep;
-    unsigned long nb_of_times_eat;
-    unsigned long id;
-    unsigned long last_meal;
-    unsigned long right;
-    unsigned long left;
-    unsigned long time_cmp;
-    unsigned long eat_count;
-    t_data        *data;
-}           t_philo;
+	unsigned long	philo_number;
+	unsigned long	time_to_die;
+	unsigned long	time_to_eat;
+	unsigned long	time_to_sleep;
+	unsigned long	nb_of_times_eat;
+	unsigned long	id;
+	unsigned long	last_meal;
+	unsigned long	right;
+	unsigned long	left;
+	unsigned long	time_cmp;
+	unsigned long	eat_count;
+	t_data			*data;
+}			t_philo;
 
 /*
-**  routine
-*/
+ **  routine
+ */
 
-int    philo_eat(t_philo *philo);
-int    philo_sleep(t_philo *philo);
-int    philo_think(t_philo *philo);
-void    *philo_routine(t_philo *philo);
-void    *start_routine(void *philo);
-
-/*
-**  init
-*/
-
-int    init_structs(t_data **infos, t_philo **philo, char **args);
-int    shared_data(t_data *infos, char **av);
-void    init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av);
-int    create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo, char **av);
-
+int				philo_eat(t_philo *philo);
+int				philo_sleep(t_philo *philo);
+int				philo_think(t_philo *philo);
+void			*philo_routine(t_philo *philo);
+int				quit_routine(t_philo *philo);
 
 /*
-**  mutex
-*/
+ **  init
+ */
 
-int destroy_mutexes(unsigned long i, t_philo *philo);
-void    take_different_forks(t_philo *philo);
-void    release_different_forks(t_philo *philo);
-
-/*
-**  philosophers
-*/
-
-void     free_structs(t_philo *philo);
-int    start_threads(t_philo *philo, unsigned long philo_number);
+int				init_structs(t_data **infos, t_philo **philo, char **args);
+int				shared_data(t_data *infos, char **av);
+void			init_philo(t_philo *philo, t_data *infos, unsigned long i, \
+				char **av);
+int				create_forks_a_philo(unsigned long i, t_data *infos, \
+				t_philo *philo, char **av);
 
 /*
-**  print
-*/
+ **  mutex
+ */
 
-void	ft_putstr_fd(char *s, int fd);
-void    print_msg(t_philo *philo, char *msg);
-int print_error(char *msg, t_philo *philo);
-
-/*
-**  time
-*/
-
-unsigned long get_time(t_philo *philo);
-unsigned long get_start_time();
-int    wait_action(t_philo *philo, unsigned long time);
+int				destroy_mutexes(unsigned long i, t_philo *philo);
+void			take_different_forks(t_philo *philo);
+void			release_different_forks(t_philo *philo);
 
 /*
-**  utils
-*/
+ **  philosophers
+ */
 
-int	ft_isdigit(char c);
-int	ft_atoi(const char *str);
+void			free_structs(t_philo *philo);
+void			*start_routine(void *philo);
+int				start_threads(t_philo *philo, unsigned long philo_number);
+
+/*
+ **  print
+ */
+
+void			ft_putstr_fd(char *s, int fd);
+void			print_msg(t_philo *philo, char *msg);
+int				print_error(char *msg, t_philo *philo);
+
+/*
+ **  time
+ */
+
+unsigned long	get_time(t_philo *philo);
+unsigned long	get_start_time(void);
+void			wait_action(t_philo *philo, unsigned long time);
+
+/*
+ **  utils
+ */
+
+int				ft_isdigit(char c);
+int				ft_atoi(const char *str);
 
 #endif
