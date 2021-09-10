@@ -2,14 +2,20 @@
 
 int    philo_eat(t_philo *philo)
 {
-    if (get_time(philo) > philo->last_meal + philo->time_to_die || \
-    philo->eat_count > philo->nb_of_times_eat)
+    if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
+    philo->eat_count >= philo->nb_of_times_eat)
     {
         pthread_mutex_lock(&philo->data->mutex);
-        if (philo->eat_count <= philo->nb_of_times_eat)
+        if (philo->eat_count < philo->nb_of_times_eat)
             print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
         pthread_mutex_unlock(&philo->data->mutex);
-        if (philo->eat_count <= philo->nb_of_times_eat)
+        if (philo->eat_count >= philo->nb_of_times_eat)
+        {
+            pthread_mutex_lock(&philo->data->end_mutex);
+            philo->data->end = 1;
+            pthread_mutex_unlock(&philo->data->end_mutex);
+        }
+        else
         {
             pthread_mutex_lock(&philo->data->die_mutex);
             philo->data->died = 1;
@@ -33,7 +39,6 @@ int    philo_eat(t_philo *philo)
 
 int    philo_sleep(t_philo *philo)
 {
-    (void)time;
     pthread_mutex_lock(&philo->data->mutex);
     print_msg(philo, "%lu milliseconds : philosopher %lu is sleeping\n");
     pthread_mutex_unlock(&philo->data->mutex);
@@ -42,7 +47,6 @@ int    philo_sleep(t_philo *philo)
 
 int    philo_think(t_philo *philo)
 {
-    (void)time;
     pthread_mutex_lock(&philo->data->mutex);
     print_msg(philo, "%lu milliseconds : philosopher %lu is thinking\n");
     pthread_mutex_unlock(&philo->data->mutex);
@@ -55,20 +59,23 @@ void    *philo_routine(t_philo *philo)
     {
         pthread_mutex_lock(&philo->data->die_mutex);
         pthread_mutex_lock(&philo->data->count_mutex);
-        if (philo->data->died || philo->eat_count > philo->nb_of_times_eat)
+        pthread_mutex_lock(&philo->data->end_mutex);
+        if (philo->data->died || philo->data->end)
         {
             pthread_mutex_unlock(&philo->data->die_mutex);
             pthread_mutex_unlock(&philo->data->count_mutex);
+            pthread_mutex_unlock(&philo->data->end_mutex);
             break ;
         }
         pthread_mutex_unlock(&philo->data->die_mutex);
         pthread_mutex_unlock(&philo->data->count_mutex);
+        pthread_mutex_unlock(&philo->data->end_mutex);
         if (philo_eat(philo) == FALSE)
             break ;
-        wait_action(philo, philo->time_to_eat);
+        wait_action(philo, philo->time_to_eat * 1000);
         release_different_forks(philo);
         philo_sleep(philo);
-        wait_action(philo, philo->time_to_sleep);
+        wait_action(philo, philo->time_to_sleep * 1000);
         philo_think(philo);
     }
     return (NULL);

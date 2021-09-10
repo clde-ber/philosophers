@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/09 18:01:24 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 14:17:25 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@
 typedef struct s_data
 {
     int           died;
+    int           end;
     unsigned long start_time;
     unsigned long time;
     pthread_mutex_t mutex;
     pthread_mutex_t       die_mutex;
+    pthread_mutex_t       end_mutex;
     pthread_mutex_t       time_mutex;
     pthread_mutex_t       count_mutex;
     pthread_mutex_t       lm_mutex;

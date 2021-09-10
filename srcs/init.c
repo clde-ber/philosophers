@@ -63,6 +63,8 @@ int    create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo, char
         return (print_error("Error in attempt to init mutex\n", philo));
     if (pthread_mutex_init(&philo->data->lm_mutex, NULL))
         return (print_error("Error in attempt to init mutex\n", philo));
+    if (pthread_mutex_init(&philo->data->end_mutex, NULL))
+        return (print_error("Error in attempt to init mutex\n", philo));
     start_threads(philo, philo->philo_number);
     return (TRUE);
 }

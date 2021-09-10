@@ -6,7 +6,7 @@ unsigned long get_time(t_philo *philo)
 
     if (gettimeofday(&tv, NULL) == -1)
         return (print_error("Error in getting time\n", philo));
-    return ((tv.tv_sec * 1000 + tv.tv_usec / 1000) - philo->data->start_time);
+    return ((tv.tv_sec * 1000000 + tv.tv_usec) - philo->data->start_time);
 }
 
 unsigned long get_start_time()
@@ -15,7 +15,7 @@ unsigned long get_start_time()
 
     if (gettimeofday(&tv, NULL) == -1)
         return (print_error("Error in getting time\n", NULL));
-    return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+    return (tv.tv_sec * 1000000 + tv.tv_usec);
 }
 
 int    wait_action(t_philo *philo, unsigned long time)
@@ -35,13 +35,13 @@ int    wait_action(t_philo *philo, unsigned long time)
     {
         pthread_mutex_lock(&philo->data->time_mutex);
         philo->data->time = get_time(philo);
-        if (philo->data->time > cumul_time + time - diff)
+        if (philo->data->time >= philo->time_cmp + time - diff)
         {
             pthread_mutex_unlock(&philo->data->time_mutex);
             break ;
         }
         pthread_mutex_unlock(&philo->data->time_mutex);
-        if (usleep(1000) == -1)
+        if (usleep(1) == -1)
             return (print_error("Error in waiting time\n", philo));
     }
     philo->time_cmp += time;

@@ -16,10 +16,14 @@ void	ft_putstr_fd(char *s, int fd)
 
 void    print_msg(t_philo *philo, char *msg)
 {
-	if (!philo->data->died)
+	pthread_mutex_lock(&philo->data->die_mutex);
+	pthread_mutex_lock(&philo->data->end_mutex);
+	if (!philo->data->died && !philo->data->end)
 	{
-    	printf(msg, get_time(philo), philo->id);
+    	printf(msg, get_time(philo) / 1000, philo->id);
 	}
+	pthread_mutex_unlock(&philo->data->die_mutex);
+	pthread_mutex_unlock(&philo->data->end_mutex);
 }
 
 int print_error(char *msg, t_philo *philo)
