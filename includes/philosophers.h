@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:53:46 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:44:33 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct s_philo
 	unsigned long	left;
 	unsigned long	time_cmp;
 	unsigned long	eat_count;
+	unsigned long	cumul_time;
+	unsigned long	diff;
 	t_data			*data;
 }			t_philo;
 

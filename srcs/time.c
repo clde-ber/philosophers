@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:58 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:41:03 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:47:25 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,11 @@ unsigned long	get_start_time(void)
 
 void	wait_action(t_philo *philo, unsigned long time)
 {
-	unsigned long	cumul_time;
-	unsigned long	diff;
-
-	cumul_time = get_time(philo);
-	if (philo->time_cmp)
-		diff = cumul_time % philo->time_cmp;
-	else
-		diff = 0;
 	while (1)
 	{
-		if (cumul_time >= philo->time_cmp + time - diff)
+		philo->cumul_time = get_time(philo);
+		if (philo->cumul_time > philo->time_cmp + time)
 			break ;
-		cumul_time = get_time(philo);
-		if (philo->time_cmp)
-			diff = cumul_time % philo->time_cmp;
-		else
-			diff = 0;
 		usleep(1);
 	}
 	philo->time_cmp += time;
