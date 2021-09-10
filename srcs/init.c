@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 17:12:07 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:14:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
 int	create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo, \
 char **av)
 {
-	if (i == 0)
+	if ((int)ft_atoi(av[1]) <= 0)
 		return (ERROR);
 	while (i < (unsigned long)ft_atoi(av[1]))
 	{
