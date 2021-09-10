@@ -35,7 +35,7 @@ int    wait_action(t_philo *philo, unsigned long time)
     {
         pthread_mutex_lock(&philo->data->time_mutex);
         philo->data->time = get_time(philo);
-        if (philo->data->time >= philo->time_cmp + time - diff)
+        if (philo->data->time >= philo->time_cmp - diff)
         {
             pthread_mutex_unlock(&philo->data->time_mutex);
             break ;
