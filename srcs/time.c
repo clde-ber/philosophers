@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:58 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 17:53:32 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:15:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	wait_action(t_philo *philo, unsigned long time)
 	while (1)
 	{
 		philo->cumul_time = get_time(philo);
-		if (philo->cumul_time - philo->time_cmp < 10000)
+		if (philo->cumul_time >= philo->time_cmp)
 			break ;
 		usleep(1);
 	}
