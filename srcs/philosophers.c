@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:35 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:14:36 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:09:25 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,14 @@ int	main(int ac, char **av)
 	{
 		init_structs(&infos, &philo, av);
 		shared_data(infos, av);
-		create_forks_a_philo(0, infos, philo, av);
+		if (create_forks_a_philo(0, infos, philo, av) == ERROR)
+		{
+			free(infos->threads);
+			free(infos->forks_mutex);
+			free(infos);
+			free(philo);
+			return (print_error("Error in arguments", NULL));
+		}
 		destroy_mutexes(0, philo);
 	}
 	free_structs(philo);

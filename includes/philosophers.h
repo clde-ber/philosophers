@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:39:12 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 16:53:46 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int				quit_routine(t_philo *philo);
 
 int				init_structs(t_data **infos, t_philo **philo, char **args);
 int				shared_data(t_data *infos, char **av);
-void			init_philo(t_philo *philo, t_data *infos, unsigned long i, \
+void			link_philos(t_philo *philo, unsigned long i);
+int				init_philo(t_philo *philo, t_data *infos, unsigned long i, \
 				char **av);
 int				create_forks_a_philo(unsigned long i, t_data *infos, \
 				t_philo *philo, char **av);

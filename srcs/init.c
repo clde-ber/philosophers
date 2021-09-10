@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:39:25 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:12:07 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,8 @@ int	shared_data(t_data *infos, char **av)
 	return (TRUE);
 }
 
-void	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
+void	link_philos(t_philo *philo, unsigned long i)
 {
-	philo->philo_number = ft_atoi(av[1]);
-	philo->time_to_die = ft_atoi(av[2]);
-	philo->time_to_eat = ft_atoi(av[3]);
-	philo->time_to_sleep = ft_atoi(av[4]);
-	if (av[5])
-		philo->nb_of_times_eat = ft_atoi(av[5]);
-	philo->data = infos;
 	philo->id = i + 1;
 	philo->right = i + 1;
 	philo->left = i;
@@ -56,13 +49,41 @@ void	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
 	}
 }
 
+int	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
+{
+	philo->philo_number = (unsigned long)ft_atoi(av[1]);
+	if ((int)philo->philo_number < 2)
+		return (ERROR);
+	philo->time_to_die = (unsigned long)ft_atoi(av[2]);
+	if ((int)philo->time_to_die < 0)
+		return (ERROR);
+	philo->time_to_eat = (unsigned long)ft_atoi(av[3]);
+	if ((int)philo->time_to_eat < 0)
+		return (ERROR);
+	philo->time_to_sleep = (unsigned long)ft_atoi(av[4]);
+	if ((int)philo->time_to_sleep < 0)
+		return (ERROR);
+	if (av[5])
+	{
+		philo->nb_of_times_eat = (unsigned long)ft_atoi(av[5]);
+		if ((int)philo->nb_of_times_eat < 0)
+			return (ERROR);
+	}
+	philo->data = infos;
+	link_philos(philo, i);
+	return (TRUE);
+}
+
 int	create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo, \
 char **av)
 {
+	if (i == 0)
+		return (ERROR);
 	while (i < (unsigned long)ft_atoi(av[1]))
 	{
 		memset(&philo[i], 0, sizeof(t_philo));
-		init_philo(&philo[i], infos, i, av);
+		if (init_philo(&philo[i], infos, i, av) == ERROR)
+			return (ERROR);
 		if (pthread_mutex_init(&philo->data->forks_mutex[i], NULL))
 			return (print_error("Error in attempt to init mutex\n", philo));
 		i++;
