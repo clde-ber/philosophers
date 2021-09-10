@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:14:25 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/10 16:39:33 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 int	destroy_mutexes(unsigned long i, t_philo *philo)
 {
 	if (pthread_mutex_destroy(&philo->data->die_mutex))
-		return (print_error("Error in attempt to destroy mutex\n", philo));
-	if (pthread_mutex_destroy(&philo->data->time_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	if (pthread_mutex_destroy(&philo->data->count_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));

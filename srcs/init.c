@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:14:15 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/10 16:39:25 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ char **av)
 	if (pthread_mutex_init(&philo->data->mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
 	if (pthread_mutex_init(&philo->data->die_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->time_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
 	if (pthread_mutex_init(&philo->data->count_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));

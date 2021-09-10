@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:58 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:15:00 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/10 16:41:03 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,15 @@ void	wait_action(t_philo *philo, unsigned long time)
 		diff = cumul_time % philo->time_cmp;
 	else
 		diff = 0;
-	pthread_mutex_lock(&philo->data->time_mutex);
-	philo->data->time = get_time(philo);
-	pthread_mutex_unlock(&philo->data->time_mutex);
 	while (1)
 	{
-		pthread_mutex_lock(&philo->data->time_mutex);
-		philo->data->time = get_time(philo);
-		if (philo->data->time >= philo->time_cmp - diff)
-		{
-			pthread_mutex_unlock(&philo->data->time_mutex);
+		if (cumul_time >= philo->time_cmp + time - diff)
 			break ;
-		}
-		pthread_mutex_unlock(&philo->data->time_mutex);
+		cumul_time = get_time(philo);
+		if (philo->time_cmp)
+			diff = cumul_time % philo->time_cmp;
+		else
+			diff = 0;
 		usleep(1);
 	}
 	philo->time_cmp += time;

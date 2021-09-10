@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 16:11:32 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 16:39:12 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_data
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	die_mutex;
 	pthread_mutex_t	end_mutex;
-	pthread_mutex_t	time_mutex;
 	pthread_mutex_t	count_mutex;
 	pthread_mutex_t	lm_mutex;
 	pthread_mutex_t	*forks_mutex;
