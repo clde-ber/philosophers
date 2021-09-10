@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 17:29:20 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:25:30 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,10 @@ char **av)
 	if (pthread_mutex_init(&philo->data->lm_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
 	if (pthread_mutex_init(&philo->data->end_mutex, NULL))
+		return (print_error("Error in attempt to init mutex\n", philo));
+	if (pthread_mutex_init(&philo->data->time_cmp_mutex, NULL))
+		return (print_error("Error in attempt to init mutex\n", philo));
+	if (pthread_mutex_init(&philo->data->cumul_time_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
 	start_threads(philo, philo->philo_number);
 	return (TRUE);

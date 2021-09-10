@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 17:27:37 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:25:56 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	destroy_mutexes(unsigned long i, t_philo *philo)
 	if (pthread_mutex_destroy(&philo->data->mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	if (pthread_mutex_destroy(&philo->data->end_mutex))
+		return (print_error("Error in attempt to destroy mutex\n", philo));
+	if (pthread_mutex_destroy(&philo->data->time_cmp_mutex))
+		return (print_error("Error in attempt to destroy mutex\n", philo));
+	if (pthread_mutex_destroy(&philo->data->cumul_time_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	while (i < philo->philo_number)
 	{

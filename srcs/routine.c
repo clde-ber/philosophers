@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:48 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 17:22:34 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:38:02 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ int	philo_eat(t_philo *philo)
 	philo->eat_count >= philo->nb_of_times_eat)
 		return (quit_routine(philo));
 	take_different_forks(philo);
+	pthread_mutex_lock(&philo->data->lm_mutex);
+	philo->last_meal = get_time(philo);
+	pthread_mutex_unlock(&philo->data->lm_mutex);
 	pthread_mutex_lock(&philo->data->mutex);
 	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork\n");
 	print_msg(philo, "%lu milliseconds : philosopher %lu is eating\n");
 	pthread_mutex_unlock(&philo->data->mutex);
-	pthread_mutex_lock(&philo->data->lm_mutex);
-	philo->last_meal = get_time(philo);
-	pthread_mutex_unlock(&philo->data->lm_mutex);
 	pthread_mutex_lock(&philo->data->count_mutex);
 	philo->eat_count++;
 	pthread_mutex_unlock(&philo->data->count_mutex);

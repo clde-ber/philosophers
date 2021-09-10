@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 17:44:33 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:24:42 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,15 @@ typedef struct s_data
 	int				died;
 	int				end;
 	unsigned long	start_time;
-	unsigned long	time;
+	unsigned long	time_cmp;
+	unsigned long	cumul_time;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	die_mutex;
 	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	count_mutex;
 	pthread_mutex_t	lm_mutex;
+	pthread_mutex_t	time_cmp_mutex;
+	pthread_mutex_t	cumul_time_mutex;
 	pthread_mutex_t	*forks_mutex;
 	pthread_t		*threads;
 }			t_data;
@@ -52,10 +55,7 @@ typedef struct s_philo
 	unsigned long	last_meal;
 	unsigned long	right;
 	unsigned long	left;
-	unsigned long	time_cmp;
 	unsigned long	eat_count;
-	unsigned long	cumul_time;
-	unsigned long	diff;
 	t_data			*data;
 }			t_philo;
 
