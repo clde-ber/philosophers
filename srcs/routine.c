@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:48 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 18:38:02 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/12 08:51:17 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 int	quit_routine(t_philo *philo)
 {
-	if (philo->eat_count < philo->nb_of_times_eat)
+	if ((philo->eat_count < philo->nb_of_times_eat && philo->nb_of_times_eat))
 	{
 		pthread_mutex_lock(&philo->data->mutex);
 		print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
 		pthread_mutex_unlock(&philo->data->mutex);
 	}
-	if (philo->eat_count >= philo->nb_of_times_eat)
+	if ((philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat) \
+	|| philo->nb_of_times_eat == 0)
 	{
 		pthread_mutex_lock(&philo->data->end_mutex);
 		philo->data->end = 1;
@@ -38,7 +39,8 @@ int	quit_routine(t_philo *philo)
 int	philo_eat(t_philo *philo)
 {
 	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
-	philo->eat_count >= philo->nb_of_times_eat)
+	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat) ||
+	philo->nb_of_times_eat == 0)
 		return (quit_routine(philo));
 	take_different_forks(philo);
 	pthread_mutex_lock(&philo->data->lm_mutex);
