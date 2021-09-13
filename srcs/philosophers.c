@@ -6,11 +6,19 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:35 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/12 08:52:28 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/13 06:52:58 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	free_structs_error(t_philo *philo, t_data *infos)
+{
+	free(infos->threads);
+	free(infos->forks_mutex);
+	free(infos);
+	free(philo);
+}
 
 void	free_structs(t_philo *philo)
 {
@@ -72,12 +80,10 @@ int	main(int ac, char **av)
 	{
 		init_structs(&infos, &philo, av);
 		shared_data(infos, av);
-		if (create_forks_a_philo(0, infos, philo, av) == ERROR)
+		if ((int)ft_atoi(av[1]) <= 0 || \
+		create_forks_a_philo(0, infos, philo, av) == ERROR)
 		{
-			free(infos->threads);
-			free(infos->forks_mutex);
-			free(infos);
-			free(philo);
+			free_structs_error(philo, infos);
 			return (print_error("Error in arguments", NULL));
 		}
 		destroy_mutexes(0, philo);

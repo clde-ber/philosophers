@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/12 08:44:19 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/13 06:50:00 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,21 @@ void	link_philos(t_philo *philo, unsigned long i)
 int	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
 {
 	philo->philo_number = (unsigned long)ft_atoi(av[1]);
-	if ((int)philo->philo_number < 2)
+	if ((int)philo->philo_number < 2 || !is_number(av[1]))
 		return (ERROR);
 	philo->time_to_die = (unsigned long)ft_atoi(av[2]);
-	if ((int)philo->time_to_die < 0)
+	if ((int)philo->time_to_die < 0 || !is_number(av[2]))
 		return (ERROR);
 	philo->time_to_eat = (unsigned long)ft_atoi(av[3]);
-	if ((int)philo->time_to_eat < 0)
+	if ((int)philo->time_to_eat < 0 || !is_number(av[3]))
 		return (ERROR);
 	philo->time_to_sleep = (unsigned long)ft_atoi(av[4]);
-	if ((int)philo->time_to_sleep < 0)
+	if ((int)philo->time_to_sleep < 0 || !is_number(av[4]))
 		return (ERROR);
 	if (av[5])
 	{
 		philo->nb_of_times_eat = (unsigned long)ft_atoi(av[5]);
-		if ((int)philo->nb_of_times_eat < 0)
+		if ((int)philo->nb_of_times_eat < 0 || !is_number(av[5]))
 			return (ERROR);
 	}
 	philo->data = infos;
@@ -77,8 +77,6 @@ int	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
 int	create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo, \
 char **av)
 {
-	if ((int)ft_atoi(av[1]) <= 0)
-		return (ERROR);
 	while (i < (unsigned long)ft_atoi(av[1]))
 	{
 		memset(&philo[i], 0, sizeof(t_philo));

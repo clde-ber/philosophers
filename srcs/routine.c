@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:48 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/12 08:51:17 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/13 06:49:22 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	quit_routine(t_philo *philo)
 int	philo_eat(t_philo *philo)
 {
 	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
-	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat) ||
+	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat) || \
 	philo->nb_of_times_eat == 0)
 		return (quit_routine(philo));
 	take_different_forks(philo);

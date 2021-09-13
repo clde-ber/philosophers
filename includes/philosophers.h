@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/10 18:24:42 by user42           ###   ########.fr       */
+/*   Updated: 2021/09/13 06:52:39 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void			release_different_forks(t_philo *philo);
  **  philosophers
  */
 
+void			free_structs_error(t_philo *philo, t_data *infos);
 void			free_structs(t_philo *philo);
 void			*start_routine(void *philo);
 int				start_threads(t_philo *philo, unsigned long philo_number);
@@ -117,6 +118,7 @@ void			wait_action(t_philo *philo, unsigned long time);
  **  utils
  */
 
+int				is_number(char *str);
 int				ft_isdigit(char c);
 int				ft_atoi(const char *str);
 
