@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/13 10:29:02 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 16:25:43 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int				start_threads(t_philo *philo, unsigned long philo_number);
  */
 
 void			ft_putstr_fd(char *s, int fd);
+void			take_forks(t_philo *philo);
 void			print_msg(t_philo *philo, char *msg);
 int				print_error(char *msg, t_philo *philo);
 

@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:42 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 09:39:55 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 16:25:18 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ void	ft_putstr_fd(char *s, int fd)
 		write(fd, &s[i], 1);
 		i++;
 	}
+}
+
+void	take_forks(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->mutex);
+	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork\n");
+	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork\n");
+	pthread_mutex_unlock(&philo->data->mutex);
 }
 
 void	print_msg(t_philo *philo, char *msg)
