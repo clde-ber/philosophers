@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 17:19:05 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 18:10:02 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ int	is_it_dead(t_philo *philo)
 	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat))
 		return (FALSE);
 	return (TRUE);
+}
+
+void	record_last_meal(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->lm_mutex);
+	philo->last_meal = get_time(philo);
+	pthread_mutex_unlock(&philo->data->lm_mutex);
 }
 
 int	destroy_mutexes(unsigned long i, t_philo *philo)
@@ -52,6 +59,7 @@ int	take_different_forks(t_philo *philo)
 	if (philo->philo_number == 2)
 	{
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
+		take_forks(philo);
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
 		take_forks(philo);
 	}
@@ -60,19 +68,19 @@ int	take_different_forks(t_philo *philo)
 		if (philo->id % 2)
 		{
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
+			take_forks(philo);
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
 			take_forks(philo);
 		}
 		else
 		{
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
+			take_forks(philo);
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
 			take_forks(philo);
 		}
 	}
-	pthread_mutex_lock(&philo->data->lm_mutex);
-	philo->last_meal = get_time(philo);
-	pthread_mutex_unlock(&philo->data->lm_mutex);
+	record_last_meal(philo);
 	return (TRUE);
 }
 
