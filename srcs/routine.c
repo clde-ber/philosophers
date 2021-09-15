@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:48 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/13 09:59:20 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 09:33:52 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ int	quit_routine(t_philo *philo)
 		print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
 		pthread_mutex_unlock(&philo->data->mutex);
 	}
-	if ((philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat) \
-	|| philo->nb_of_times_eat == 0)
+	if ((philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat))
 	{
 		pthread_mutex_lock(&philo->data->end_mutex);
 		philo->data->end = 1;
@@ -39,8 +38,7 @@ int	quit_routine(t_philo *philo)
 int	philo_eat(t_philo *philo)
 {
 	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
-	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat) || \
-	philo->nb_of_times_eat == 0)
+	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat))
 		return (quit_routine(philo));
 	take_different_forks(philo);
 	pthread_mutex_lock(&philo->data->lm_mutex);

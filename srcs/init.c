@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/13 06:50:00 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 09:31:27 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	link_philos(t_philo *philo, unsigned long i)
 
 int	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
 {
+	philo->data = infos;
 	philo->philo_number = (unsigned long)ft_atoi(av[1]);
 	if ((int)philo->philo_number < 2 || !is_number(av[1]))
 		return (ERROR);
@@ -68,8 +69,9 @@ int	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
 		philo->nb_of_times_eat = (unsigned long)ft_atoi(av[5]);
 		if ((int)philo->nb_of_times_eat < 0 || !is_number(av[5]))
 			return (ERROR);
+		if (philo->nb_of_times_eat == 0)
+			philo->data->end = 1;
 	}
-	philo->data = infos;
 	link_philos(philo, i);
 	return (TRUE);
 }
