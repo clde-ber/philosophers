@@ -6,11 +6,19 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 16:42:09 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 17:19:05 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+int	is_it_dead(t_philo *philo)
+{
+	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
+	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat))
+		return (FALSE);
+	return (TRUE);
+}
 
 int	destroy_mutexes(unsigned long i, t_philo *philo)
 {
@@ -39,8 +47,7 @@ int	destroy_mutexes(unsigned long i, t_philo *philo)
 
 int	take_different_forks(t_philo *philo)
 {
-	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
-	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat))
+	if (is_it_dead(philo))
 		return (FALSE);
 	if (philo->philo_number == 2)
 	{
