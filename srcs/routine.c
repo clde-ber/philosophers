@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:48 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 09:33:52 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 09:42:04 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int	quit_routine(t_philo *philo)
 	}
 	else
 	{
+		pthread_mutex_lock(&philo->data->mutex);
+		print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
+		pthread_mutex_unlock(&philo->data->mutex);
 		pthread_mutex_lock(&philo->data->die_mutex);
 		philo->data->died = 1;
 		pthread_mutex_unlock(&philo->data->die_mutex);
