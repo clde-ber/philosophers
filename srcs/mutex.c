@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 16:28:16 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 16:39:30 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,11 @@ int	destroy_mutexes(unsigned long i, t_philo *philo)
 	return (TRUE);
 }
 
-void	take_different_forks(t_philo *philo)
+int	take_different_forks(t_philo *philo)
 {
+	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
+	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat))
+		return (FALSE);
 	if (philo->philo_number == 2)
 	{
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
@@ -62,10 +65,11 @@ void	take_different_forks(t_philo *philo)
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
 			take_forks(philo);
 		}
-		pthread_mutex_lock(&philo->data->lm_mutex);
-		philo->last_meal = get_time(philo);
-		pthread_mutex_unlock(&philo->data->lm_mutex);
 	}
+	pthread_mutex_lock(&philo->data->lm_mutex);
+	philo->last_meal = get_time(philo);
+	pthread_mutex_unlock(&philo->data->lm_mutex);
+	return (TRUE);
 }
 
 void	release_different_forks(t_philo *philo)

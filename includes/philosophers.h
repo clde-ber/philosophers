@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 16:25:43 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 16:37:05 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int				create_forks_a_philo(unsigned long i, t_data *infos, \
  */
 
 int				destroy_mutexes(unsigned long i, t_philo *philo);
-void			take_different_forks(t_philo *philo);
+int			take_different_forks(t_philo *philo);
 void			release_different_forks(t_philo *philo);
 
 /*
