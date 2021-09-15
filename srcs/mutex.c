@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 16:39:30 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/15 16:42:09 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	take_different_forks(t_philo *philo)
 	if (philo->philo_number == 2)
 	{
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
-		take_forks(philo);
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
 		take_forks(philo);
 	}
@@ -54,14 +53,12 @@ int	take_different_forks(t_philo *philo)
 		if (philo->id % 2)
 		{
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
-			take_forks(philo);
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
 			take_forks(philo);
 		}
 		else
 		{
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
-			take_forks(philo);
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
 			take_forks(philo);
 		}
