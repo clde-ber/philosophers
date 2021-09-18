@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:35 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 09:43:08 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/18 11:08:51 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,29 @@ void	free_structs(t_philo *philo)
 void	*start_routine(void *philo)
 {
 	t_philo	*phil;
+	int		index;
 
 	phil = (t_philo *)philo;
+	pthread_mutex_lock(&phil->data->start_mutex);
+	index = phil->data->start++;
 	pthread_mutex_lock(&phil->data->mutex);
 	print_msg(philo, "%lu milliseconds : philosopher %lu is alive\n");
 	pthread_mutex_unlock(&phil->data->mutex);
+	pthread_mutex_unlock(&phil->data->start_mutex);
+	while (index < phil->philo_number)
+	{
+		pthread_mutex_lock(&phil->data->start_mutex);
+		index = phil->data->start;
+		pthread_mutex_unlock(&phil->data->start_mutex);
+	}
 	philo_routine(philo);
 	return (TRUE);
 }
 
-int	start_threads(t_philo *philo, unsigned long philo_number)
+int	start_threads(t_philo *philo, int philo_number)
 {
-	int				ret;
-	unsigned long	i;
+	int	ret;
+	int	i;
 
 	i = 0;
 	while (i < philo_number)
@@ -69,9 +79,7 @@ int	main(int ac, char **av)
 {
 	t_philo			*philo;
 	t_data			*infos;
-	unsigned long	i;
 
-	i = 0;
 	philo = NULL;
 	infos = NULL;
 	if (ac < 5)
@@ -80,7 +88,7 @@ int	main(int ac, char **av)
 	{
 		init_structs(&infos, &philo, av);
 		shared_data(infos, av);
-		if ((int)ft_atoi(av[1]) <= 0 || \
+		if (ft_atoi(av[1]) <= 0 || \
 		create_forks_a_philo(0, infos, philo, av) == ERROR)
 		{
 			free_structs_error(philo, infos);

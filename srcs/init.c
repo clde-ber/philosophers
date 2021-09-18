@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 18:32:49 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/18 11:10:25 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,49 +37,44 @@ int	shared_data(t_data *infos, char **av)
 	return (TRUE);
 }
 
-void	link_philos(t_philo *philo, unsigned long i)
+void	link_philos(t_philo *philo, int i)
 {
 	philo->id = i + 1;
-	philo->right = i + 1;
+	philo->right = (i + 1) % philo->philo_number;
 	philo->left = i;
-	if (i == philo->philo_number - 1)
-	{
-		philo->right = 0;
-		philo->left = i;
-	}
 }
 
-int	init_philo(t_philo *philo, t_data *infos, unsigned long i, char **av)
+int	init_philo(t_philo *philo, t_data *infos, int i, char **av)
 {
-	philo->data = infos;
-	link_philos(philo, i);
-	philo->philo_number = (unsigned long)ft_atoi(av[1]);
-	if ((int)philo->philo_number < 2 || !is_number(av[1]))
+	philo->philo_number = ft_atoi(av[1]);
+	if (!is_number(av[1]) || philo->philo_number < 2)
 		return (ERROR);
-	philo->time_to_die = (unsigned long)ft_atoi(av[2]);
-	if ((int)philo->time_to_die < 0 || !is_number(av[2]))
+	philo->time_to_die = ft_atoi(av[2]);
+	if (!is_number(av[2]) || philo->time_to_die < 0)
 		return (ERROR);
-	philo->time_to_eat = (unsigned long)ft_atoi(av[3]);
-	if ((int)philo->time_to_eat < 0 || !is_number(av[3]))
+	philo->time_to_eat = ft_atoi(av[3]);
+	if (!is_number(av[3]) || philo->time_to_eat < 0)
 		return (ERROR);
-	philo->time_to_sleep = (unsigned long)ft_atoi(av[4]);
-	if ((int)philo->time_to_sleep < 0 || !is_number(av[4]))
+	philo->time_to_sleep = ft_atoi(av[4]);
+	if (!is_number(av[4]) || philo->time_to_sleep < 0)
 		return (ERROR);
 	if (av[5])
 	{
-		philo->nb_of_times_eat = (unsigned long)ft_atoi(av[5]);
-		if ((int)philo->nb_of_times_eat < 0 || !is_number(av[5]))
+		philo->nb_of_times_eat = ft_atoi(av[5]);
+		if (!is_number(av[5]) || philo->nb_of_times_eat < 0)
 			return (ERROR);
 		if (philo->nb_of_times_eat == 0)
 			philo->data->end = 1;
 	}
+	philo->data = infos;
+	link_philos(philo, i);
 	return (TRUE);
 }
 
-int	create_forks_a_philo(unsigned long i, t_data *infos, t_philo *philo, \
+int	create_forks_a_philo(int i, t_data *infos, t_philo *philo, \
 char **av)
 {
-	while (i < (unsigned long)ft_atoi(av[1]))
+	while (i < ft_atoi(av[1]))
 	{
 		memset(&philo[i], 0, sizeof(t_philo));
 		if (init_philo(&philo[i], infos, i, av) == ERROR)
@@ -101,6 +96,8 @@ char **av)
 	if (pthread_mutex_init(&philo->data->time_cmp_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
 	if (pthread_mutex_init(&philo->data->cumul_time_mutex, NULL))
+		return (print_error("Error in attempt to init mutex\n", philo));
+	if (pthread_mutex_init(&philo->data->start_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
 	start_threads(philo, philo->philo_number);
 	return (TRUE);

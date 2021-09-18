@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:42 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 17:51:59 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/17 11:59:26 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,23 @@ void	take_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->mutex);
 	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork\n");
+	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork\n");
+	pthread_mutex_unlock(&philo->data->mutex);
+}
+
+void	take_forks_right(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->mutex);
+	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork - right\n");
+	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork - left\n");
+	pthread_mutex_unlock(&philo->data->mutex);
+}
+
+void	take_forks_left(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->mutex);
+	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork - left\n");
+	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork - right\n");
 	pthread_mutex_unlock(&philo->data->mutex);
 }
 

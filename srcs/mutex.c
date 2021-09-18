@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/15 18:10:02 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/18 11:09:01 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	record_last_meal(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->lm_mutex);
 }
 
-int	destroy_mutexes(unsigned long i, t_philo *philo)
+int	destroy_mutexes(int i, t_philo *philo)
 {
 	if (pthread_mutex_destroy(&philo->data->die_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
@@ -42,6 +42,8 @@ int	destroy_mutexes(unsigned long i, t_philo *philo)
 	if (pthread_mutex_destroy(&philo->data->time_cmp_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	if (pthread_mutex_destroy(&philo->data->cumul_time_mutex))
+		return (print_error("Error in attempt to destroy mutex\n", philo));
+	if (pthread_mutex_destroy(&philo->data->start_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	while (i < philo->philo_number)
 	{
@@ -59,7 +61,6 @@ int	take_different_forks(t_philo *philo)
 	if (philo->philo_number == 2)
 	{
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
-		take_forks(philo);
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
 		take_forks(philo);
 	}
@@ -68,16 +69,14 @@ int	take_different_forks(t_philo *philo)
 		if (philo->id % 2)
 		{
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
-			take_forks(philo);
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
-			take_forks(philo);
+			take_forks_right(philo);
 		}
 		else
 		{
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
-			take_forks(philo);
 			pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
-			take_forks(philo);
+			take_forks_left(philo);
 		}
 	}
 	record_last_meal(philo);
@@ -95,13 +94,13 @@ void	release_different_forks(t_philo *philo)
 	{
 		if (philo->id % 2)
 		{
-			pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);
 			pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
+			pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);
 		}
 		else
 		{
-			pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
 			pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);
+			pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
 		}
 	}
 }
