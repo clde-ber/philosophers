@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/20 08:30:09 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/20 08:35:14 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,22 +83,7 @@ char **av)
 			return (print_error("Error in attempt to init mutex\n", philo));
 		i++;
 	}
-	if (pthread_mutex_init(&philo->data->mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->die_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->count_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->lm_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->end_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->time_cmp_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->cumul_time_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->start_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
+	init_mutexes(philo);
 	start_threads(philo, philo->philo_number);
 	return (TRUE);
 }

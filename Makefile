@@ -2,6 +2,7 @@
 
 NAME	=	philo
 LIST	=	routine \
+			routine_utils \
 			init \
 			mutex \
 			philosophers \
