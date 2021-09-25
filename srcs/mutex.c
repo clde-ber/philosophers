@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/20 08:41:45 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/25 09:15:09 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ int	init_mutexes(t_philo *philo)
 		return (print_error("Error in attempt to init mutex\n", philo));
 	if (pthread_mutex_init(&philo->data->cumul_time_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->start_mutex, NULL))
-		return (print_error("Error in attempt to init mutex\n", philo));
 	return (TRUE);
 }
 
@@ -48,8 +46,6 @@ int	destroy_mutexes(int i, t_philo *philo)
 	if (pthread_mutex_destroy(&philo->data->time_cmp_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	if (pthread_mutex_destroy(&philo->data->cumul_time_mutex))
-		return (print_error("Error in attempt to destroy mutex\n", philo));
-	if (pthread_mutex_destroy(&philo->data->start_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	while (i < philo->philo_number)
 	{

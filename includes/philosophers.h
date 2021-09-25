@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/20 08:41:43 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/25 09:35:28 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct s_data
 	unsigned long	adjust;
 	int				minus;
 	unsigned long	start_time;
-	unsigned long	start;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	die_mutex;
 	pthread_mutex_t	end_mutex;
@@ -41,7 +40,6 @@ typedef struct s_data
 	pthread_mutex_t	lm_mutex;
 	pthread_mutex_t	time_cmp_mutex;
 	pthread_mutex_t	cumul_time_mutex;
-	pthread_mutex_t	start_mutex;
 	pthread_mutex_t	*forks_mutex;
 	pthread_t		*threads;
 }			t_data;

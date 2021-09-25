@@ -11,7 +11,7 @@ LIST	=	routine \
 			utils \
 
 HEADER	=	-I includes/
-CFLAGS	=	-Wall -Wextra -Werror -pthread -g3 -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -pthread -MMD #-g3 -fsanitize=address
 CC		=	clang
 
 S_DIR	=	srcs/
@@ -35,17 +35,13 @@ LIST_D	= $(addprefix $(D_DIR), $(LIST))
 
 SRCS	= $(addsuffix $(C_SUFF), $(LIST_C))
 OBJS	= $(addsuffix $(O_SUFF), $(LIST_O))
-DEPS	= $(addsuffix $(D_SUFF), $(LIST_D))
+DEPS	= $(OBJS:.o=.d)
 
 $(O_DIR)%.o	:	$(S_DIR)%.c
 				$(DIR_O)
 				$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
 
-$(D_DIR)%.d	:	$(O_DIR)%.o
-				$(DIR_D)
-				$(CC) $(HEADER) $< -MMD $@
-
-$(NAME)	:		$(OBJS)
+$(NAME)	:		$(OBJS) $(DEPS)
 				$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 all	:			$(NAME)
@@ -60,5 +56,5 @@ re	:			fclean all
 
 .PHONY	:		all clean fclean re
 
--include	$(DEP)
+-include	$(DEPS)
 

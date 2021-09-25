@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:35 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/18 11:08:51 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/09/25 09:16:06 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,8 @@ void	free_structs(t_philo *philo)
 void	*start_routine(void *philo)
 {
 	t_philo	*phil;
-	int		index;
 
 	phil = (t_philo *)philo;
-	pthread_mutex_lock(&phil->data->start_mutex);
-	index = phil->data->start++;
-	pthread_mutex_lock(&phil->data->mutex);
-	print_msg(philo, "%lu milliseconds : philosopher %lu is alive\n");
-	pthread_mutex_unlock(&phil->data->mutex);
-	pthread_mutex_unlock(&phil->data->start_mutex);
-	while (index < phil->philo_number)
-	{
-		pthread_mutex_lock(&phil->data->start_mutex);
-		index = phil->data->start;
-		pthread_mutex_unlock(&phil->data->start_mutex);
-	}
 	philo_routine(philo);
 	return (TRUE);
 }
@@ -82,7 +69,7 @@ int	main(int ac, char **av)
 
 	philo = NULL;
 	infos = NULL;
-	if (ac < 5)
+	if (ac < 5 || ac > 6)
 		return (print_error("Error in arguments\n", NULL));
 	else
 	{
