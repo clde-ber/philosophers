@@ -41,7 +41,7 @@ $(O_DIR)%.o	:	$(S_DIR)%.c
 				$(DIR_O)
 				$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
 
-$(NAME)	:		$(OBJS) $(DEPS)
+$(NAME)	:		$(OBJS)
 				$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 all	:			$(NAME)
