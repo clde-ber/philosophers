@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:35 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/25 09:16:06 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 08:38:06 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int ac, char **av)
 		create_forks_a_philo(0, infos, philo, av) == ERROR)
 		{
 			free_structs_error(philo, infos);
-			return (print_error("Error in arguments", NULL));
+			return (print_error("Error in arguments\n", NULL));
 		}
 		destroy_mutexes(0, philo);
 	}

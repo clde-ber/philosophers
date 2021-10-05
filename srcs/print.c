@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:42 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/20 08:41:55 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 08:38:51 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	print_error(char *msg, t_philo *philo)
 	if (philo)
 		pthread_mutex_lock(&philo->data->mutex);
 	ft_putstr_fd(msg, 2);
-	ft_putstr_fd("\n", 2);
 	if (philo)
 		pthread_mutex_unlock(&philo->data->mutex);
 	return (ERROR);
