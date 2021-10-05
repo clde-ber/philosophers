@@ -6,7 +6,7 @@
 /*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 15:09:15 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 16:00:44 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,15 @@
 
 int	quit_routine(t_philo *philo)
 {
-	if ((philo->eat_count < philo->nb_of_times_eat && philo->nb_of_times_eat))
+	if ((philo->eat_count < philo->nb_of_times_eat && philo->nb_of_times_eat) \
+	|| !philo->nb_of_times_eat)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
-		print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
-		pthread_mutex_unlock(&philo->data->mutex);
 		pthread_mutex_lock(&philo->data->die_mutex);
+		printf("%lu milliseconds : philosopher %d died\n", get_time(philo) \
+		/ 1000, philo->id);
 		philo->data->died = 1;
-		pthread_mutex_unlock(&philo->data->die_mutex);
-	}
-	else if (!philo->nb_of_times_eat)
-	{
-		pthread_mutex_lock(&philo->data->mutex);
-		print_msg(philo, "%lu milliseconds : philosopher %lu died\n");
 		pthread_mutex_unlock(&philo->data->mutex);
-		pthread_mutex_lock(&philo->data->die_mutex);
-		philo->data->died = 1;
 		pthread_mutex_unlock(&philo->data->die_mutex);
 	}
 	else
@@ -48,7 +41,7 @@ int	philo_eat(t_philo *philo)
 	if (philo->philo_number > 1)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
-		print_msg(philo, "%lu milliseconds : philosopher %lu is eating\n");
+		print_msg(philo, "%lu milliseconds : philosopher %d is eating\n");
 		pthread_mutex_unlock(&philo->data->mutex);
 		pthread_mutex_lock(&philo->data->count_mutex);
 		philo->eat_count++;
@@ -62,7 +55,7 @@ int	philo_sleep(t_philo *philo)
 	if (philo->philo_number > 1)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
-		print_msg(philo, "%lu milliseconds : philosopher %lu is sleeping\n");
+		print_msg(philo, "%lu milliseconds : philosopher %d is sleeping\n");
 		pthread_mutex_unlock(&philo->data->mutex);
 	}
 	return (TRUE);
@@ -73,7 +66,7 @@ int	philo_think(t_philo *philo)
 	if (philo->philo_number > 1)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
-		print_msg(philo, "%lu milliseconds : philosopher %lu is thinking\n");
+		print_msg(philo, "%lu milliseconds : philosopher %d is thinking\n");
 		pthread_mutex_unlock(&philo->data->mutex);
 	}
 	else

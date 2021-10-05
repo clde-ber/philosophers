@@ -6,7 +6,7 @@
 /*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:08:58 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 15:09:00 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:59:42 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	ft_putstr_fd(char *s, int fd)
 void	take_forks(t_philo *philo, int is_alone)
 {
 	pthread_mutex_lock(&philo->data->mutex);
-	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork\n");
+	print_msg(philo, "%lu milliseconds : philosopher %d has taken a fork\n");
 	if (is_alone)
-		print_msg(philo, "%lu milliseconds : philosopher %lu has taken a \
+		print_msg(philo, "%lu milliseconds : philosopher %d has taken a \
 fork\n");
 	pthread_mutex_unlock(&philo->data->mutex);
 }
@@ -47,8 +47,6 @@ void	print_msg(t_philo *philo, char *msg)
 	}
 	pthread_mutex_unlock(&philo->data->die_mutex);
 	pthread_mutex_unlock(&philo->data->end_mutex);
-	pthread_mutex_lock(&philo->data->die_mutex);
-	pthread_mutex_unlock(&philo->data->die_mutex);
 }
 
 int	print_error(char *msg, t_philo *philo)
