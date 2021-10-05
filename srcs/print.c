@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:42 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 08:38:51 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 14:46:55 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
-void	take_forks(t_philo *philo)
+void	take_forks(t_philo *philo, int is_alone)
 {
 	pthread_mutex_lock(&philo->data->mutex);
 	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork\n");
-	print_msg(philo, "%lu milliseconds : philosopher %lu has taken a fork\n");
+	if (is_alone)
+		print_msg(philo, "%lu milliseconds : philosopher %lu has taken a \
+fork\n");
 	pthread_mutex_unlock(&philo->data->mutex);
 }
 
@@ -38,7 +40,8 @@ void	print_msg(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&philo->data->die_mutex);
 	pthread_mutex_lock(&philo->data->end_mutex);
-	if (!philo->data->died && !philo->data->end)
+	if ((!philo->data->died && !philo->data->end) || \
+	(philo->philo_number == 1 && philo->data->died))
 	{
 		printf(msg, get_time(philo) / 1000, philo->id);
 	}

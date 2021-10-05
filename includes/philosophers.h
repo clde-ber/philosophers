@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/25 09:35:28 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 14:49:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int				start_threads(t_philo *philo, int philo_number);
 */
 
 void			ft_putstr_fd(char *s, int fd);
-void			take_forks(t_philo *philo);
+void			take_forks(t_philo *philo, int is_alone);
 void			print_msg(t_philo *philo, char *msg);
 int				print_error(char *msg, t_philo *philo);
 
@@ -114,6 +114,7 @@ int				quit_routine(t_philo *philo);
 **  routine_utils
 */
 
+void			*single_philo_dies(t_philo *philo);
 int				is_it_dead(t_philo *philo);
 void			record_last_meal(t_philo *philo);
 

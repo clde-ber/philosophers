@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:35 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 09:30:15 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:03:51 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,23 @@ void	*start_routine(void *philo)
 int	start_threads(t_philo *philo, int philo_number)
 {
 	int	ret;
-	int	ret_j;
 	int	i;
 
 	i = 0;
 	ret = 0;
-	ret_j = 0;
 	while (i < philo_number)
 	{
 		ret = pthread_create(&philo->data->threads[i], NULL, &start_routine, \
 		(void *)&philo[i]);
 		if (ret)
 			return (print_error("Error in attempt to create thread\n", philo));
-		ret_j = pthread_join(philo->data->threads[i], NULL);
-		if (ret_j)
+		i++;
+	}
+	i = 0;
+	while (i < philo_number)
+	{
+		ret = pthread_join(philo->data->threads[i], NULL);
+		if (ret)
 			return (print_error("Error in attempt to join thread\n", philo));
 		i++;
 	}

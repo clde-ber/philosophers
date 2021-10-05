@@ -1,5 +1,17 @@
 #include "philosophers.h"
 
+void	*single_philo_dies(t_philo *philo)
+{
+	int	ret;
+
+	ret = 0;
+	pthread_mutex_lock(&philo->data->die_mutex);
+	philo->data->died = 1;
+	pthread_mutex_unlock(&philo->data->die_mutex);
+	ret = quit_routine(philo);
+	return (NULL);
+}
+
 int	is_it_dead(t_philo *philo)
 {
 	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \

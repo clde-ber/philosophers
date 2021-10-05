@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 09:26:45 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 14:41:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,22 @@ int	take_different_forks(t_philo *philo)
 {
 	if (is_it_dead(philo))
 		return (FALSE);
-	if (philo->id % 2)
+	if (philo->philo_number == 1)
+	{
+		pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
+		take_forks(philo, 0);
+	}
+	else if (philo->id % 2)
 	{
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
-		take_forks(philo);
+		take_forks(philo, 1);
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->left]);
 		pthread_mutex_lock(&philo->data->forks_mutex[philo->right]);
-		take_forks(philo);
+		take_forks(philo, 1);
 	}
 	record_last_meal(philo);
 	return (TRUE);
@@ -78,7 +83,9 @@ int	take_different_forks(t_philo *philo)
 
 void	release_different_forks(t_philo *philo)
 {
-	if (philo->id % 2)
+	if (philo->philo_number == 1)
+		pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
+	else if (philo->id % 2)
 	{
 		pthread_mutex_unlock(&philo->data->forks_mutex[philo->right]);
 		pthread_mutex_unlock(&philo->data->forks_mutex[philo->left]);

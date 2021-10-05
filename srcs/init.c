@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 16:14:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/09/20 08:35:14 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/05 14:35:58 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	link_philos(t_philo *philo, int i)
 int	init_philo(t_philo *philo, t_data *infos, int i, char **av)
 {
 	philo->philo_number = ft_atoi(av[1]);
-	if (!is_number(av[1]) || philo->philo_number < 2)
+	if (!is_number(av[1]) || philo->philo_number <= 0)
 		return (ERROR);
 	philo->time_to_die = ft_atoi(av[2]);
 	if (!is_number(av[2]) || philo->time_to_die < 0)
