@@ -6,7 +6,7 @@
 /*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:39 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 15:09:42 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/06 14:42:46 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ void	wait_action(t_philo *philo, unsigned long time)
 		time2 = get_timestamp(philo);
 		pthread_mutex_unlock(&philo->data->cumul_time_mutex);
 		cumul = time2 - time1;
-		usleep(1);
+		usleep(100);
 	}
 }
