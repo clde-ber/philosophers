@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 16:00:44 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 12:49:57 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	quit_routine(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
 		pthread_mutex_lock(&philo->data->die_mutex);
-		printf("%lu milliseconds : philosopher %d died\n", get_time(philo), philo->id);
+		printf("%lu milliseconds : philosopher %d died\n", get_time(philo), \
+		philo->id);
 		philo->data->died = 1;
 		pthread_mutex_unlock(&philo->data->mutex);
 		pthread_mutex_unlock(&philo->data->die_mutex);
