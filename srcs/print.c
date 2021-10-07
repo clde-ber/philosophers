@@ -43,7 +43,7 @@ void	print_msg(t_philo *philo, char *msg)
 	if ((!philo->data->died && !philo->data->end) || \
 	(philo->philo_number == 1 && philo->data->died))
 	{
-		printf(msg, get_time(philo) / 1000, philo->id);
+		printf(msg, get_time(philo), philo->id);
 	}
 	pthread_mutex_unlock(&philo->data->die_mutex);
 	pthread_mutex_unlock(&philo->data->end_mutex);

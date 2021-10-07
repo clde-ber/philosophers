@@ -19,8 +19,7 @@ int	quit_routine(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
 		pthread_mutex_lock(&philo->data->die_mutex);
-		printf("%lu milliseconds : philosopher %d died\n", get_time(philo) \
-		/ 1000, philo->id);
+		printf("%lu milliseconds : philosopher %d died\n", get_time(philo), philo->id);
 		philo->data->died = 1;
 		pthread_mutex_unlock(&philo->data->mutex);
 		pthread_mutex_unlock(&philo->data->die_mutex);
@@ -71,7 +70,7 @@ int	philo_think(t_philo *philo)
 	}
 	else
 		wait_action(philo, (philo->time_to_die - philo->time_to_eat - \
-		philo->time_to_sleep) * 1000);
+		philo->time_to_sleep));
 	return (TRUE);
 }
 
@@ -91,10 +90,10 @@ void	*philo_routine(t_philo *philo)
 		pthread_mutex_unlock(&philo->data->end_mutex);
 		if (philo_eat(philo) == FALSE)
 			return (NULL);
-		wait_action(philo, philo->time_to_eat * 1000);
+		wait_action(philo, philo->time_to_eat);
 		release_different_forks(philo);
 		philo_sleep(philo);
-		wait_action(philo, philo->time_to_sleep * 1000);
+		wait_action(philo, philo->time_to_sleep);
 		philo_think(philo);
 		if (philo->philo_number == 1)
 			return (single_philo_dies(philo));

@@ -26,7 +26,7 @@ void	*single_philo_dies(t_philo *philo)
 
 int	is_it_dead(t_philo *philo)
 {
-	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
+	if (get_time(philo) > philo->last_meal + philo->time_to_die || \
 	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat))
 		return (FALSE);
 	return (TRUE);

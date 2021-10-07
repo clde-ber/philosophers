@@ -18,7 +18,7 @@ unsigned long	get_time(t_philo *philo)
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (print_error("Error in getting time\n", philo));
-	return ((tv.tv_sec * 1000000 + tv.tv_usec) - philo->data->start_time);
+	return ((tv.tv_sec * 1000 + tv.tv_usec / 1000) - philo->data->start_time);
 }
 
 unsigned long	get_timestamp(t_philo *philo)
@@ -27,7 +27,7 @@ unsigned long	get_timestamp(t_philo *philo)
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (print_error("Error in getting time\n", philo));
-	return (tv.tv_sec * 1000000 + tv.tv_usec);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
 unsigned long	get_start_time(void)
@@ -36,7 +36,7 @@ unsigned long	get_start_time(void)
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (print_error("Error in getting time\n", NULL));
-	return (tv.tv_sec * 1000000 + tv.tv_usec);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
 void	wait_action(t_philo *philo, unsigned long time)
