@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:08:20 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 15:08:27 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 12:51:23 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	init_mutexes(t_philo *philo)
 		return (print_error("Error in attempt to init mutex\n", philo));
 	if (pthread_mutex_init(&philo->data->time_cmp_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
-	if (pthread_mutex_init(&philo->data->cumul_time_mutex, NULL))
+	if (pthread_mutex_init(&philo->data->time_mutex, NULL))
 		return (print_error("Error in attempt to init mutex\n", philo));
 	return (TRUE);
 }
@@ -45,7 +45,7 @@ int	destroy_mutexes(int i, t_philo *philo)
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	if (pthread_mutex_destroy(&philo->data->time_cmp_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
-	if (pthread_mutex_destroy(&philo->data->cumul_time_mutex))
+	if (pthread_mutex_destroy(&philo->data->time_mutex))
 		return (print_error("Error in attempt to destroy mutex\n", philo));
 	while (i < philo->philo_number)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:39 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/06 14:42:46 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 12:52:29 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ void	wait_action(t_philo *philo, unsigned long time)
 	pthread_mutex_lock(&philo->data->time_cmp_mutex);
 	time1 = get_timestamp(philo);
 	pthread_mutex_unlock(&philo->data->time_cmp_mutex);
-	pthread_mutex_lock(&philo->data->cumul_time_mutex);
+	pthread_mutex_lock(&philo->data->time_mutex);
 	time2 = get_timestamp(philo);
-	pthread_mutex_unlock(&philo->data->cumul_time_mutex);
+	pthread_mutex_unlock(&philo->data->time_mutex);
 	while (cumul < time)
 	{
-		pthread_mutex_lock(&philo->data->cumul_time_mutex);
+		pthread_mutex_lock(&philo->data->time_mutex);
 		time2 = get_timestamp(philo);
-		pthread_mutex_unlock(&philo->data->cumul_time_mutex);
+		pthread_mutex_unlock(&philo->data->time_mutex);
 		cumul = time2 - time1;
 		usleep(1000);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 14:49:47 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/07 12:51:23 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_data
 	pthread_mutex_t	count_mutex;
 	pthread_mutex_t	lm_mutex;
 	pthread_mutex_t	time_cmp_mutex;
-	pthread_mutex_t	cumul_time_mutex;
+	pthread_mutex_t	time_mutex;
 	pthread_mutex_t	*forks_mutex;
 	pthread_t		*threads;
 }			t_data;
