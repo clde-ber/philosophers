@@ -58,6 +58,6 @@ void	wait_action(t_philo *philo, unsigned long time)
 		time2 = get_timestamp(philo);
 		pthread_mutex_unlock(&philo->data->cumul_time_mutex);
 		cumul = time2 - time1;
-		usleep(100);
+		usleep(1000);
 	}
 }
