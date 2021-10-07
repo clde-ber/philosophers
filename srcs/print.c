@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:08:58 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 15:59:42 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 12:54:13 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_msg(t_philo *philo, char *msg)
 	if ((!philo->data->died && !philo->data->end) || \
 	(philo->philo_number == 1 && philo->data->died))
 	{
-		printf(msg, get_time(philo), philo->id);
+		printf(msg, get_time(philo) / 1000, philo->id);
 	}
 	pthread_mutex_unlock(&philo->data->die_mutex);
 	pthread_mutex_unlock(&philo->data->end_mutex);

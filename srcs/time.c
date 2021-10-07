@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:39 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/07 12:52:29 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 13:01:04 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ unsigned long	get_time(t_philo *philo)
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (print_error("Error in getting time\n", philo));
-	return ((tv.tv_sec * 1000 + tv.tv_usec / 1000) - philo->data->start_time);
+	return ((tv.tv_sec * 1000000 + tv.tv_usec) - philo->data->start_time);
 }
 
 unsigned long	get_timestamp(t_philo *philo)
@@ -27,7 +27,7 @@ unsigned long	get_timestamp(t_philo *philo)
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (print_error("Error in getting time\n", philo));
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	return (tv.tv_sec * 1000000 + tv.tv_usec);
 }
 
 unsigned long	get_start_time(void)
@@ -36,7 +36,7 @@ unsigned long	get_start_time(void)
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (print_error("Error in getting time\n", NULL));
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	return (tv.tv_sec * 1000000 + tv.tv_usec);
 }
 
 void	wait_action(t_philo *philo, unsigned long time)

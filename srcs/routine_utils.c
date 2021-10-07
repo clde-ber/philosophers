@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 15:36:57 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 12:54:26 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	single_philo_dies(t_philo *philo)
 
 int	is_it_dead(t_philo *philo)
 {
-	if (get_time(philo) > philo->last_meal + philo->time_to_die || \
+	if (get_time(philo) > philo->last_meal + philo->time_to_die * 1000 || \
 	(philo->eat_count >= philo->nb_of_times_eat && philo->nb_of_times_eat))
 		return (FALSE);
 	return (TRUE);

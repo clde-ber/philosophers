@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/07 12:49:57 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 13:02:03 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	quit_routine(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
 		pthread_mutex_lock(&philo->data->die_mutex);
-		printf("%lu milliseconds : philosopher %d died\n", get_time(philo), \
-		philo->id);
+		printf("%lu milliseconds : philosopher %d died\n", get_time(philo) \
+		/ 1000, philo->id);
 		philo->data->died = 1;
 		pthread_mutex_unlock(&philo->data->mutex);
 		pthread_mutex_unlock(&philo->data->die_mutex);
@@ -50,7 +50,7 @@ int	philo_eat(t_philo *philo)
 	else
 	{
 		release_different_forks(philo);
-		wait_action(philo, philo->time_to_die);
+		wait_action(philo, philo->time_to_die * 1000);
 		return (single_philo_dies(philo));
 	}
 	return (TRUE);
@@ -94,10 +94,10 @@ void	*philo_routine(t_philo *philo)
 		pthread_mutex_unlock(&philo->data->end_mutex);
 		if (philo_eat(philo) == FALSE)
 			return (NULL);
-		wait_action(philo, philo->time_to_eat);
+		wait_action(philo, philo->time_to_eat * 1000);
 		release_different_forks(philo);
 		philo_sleep(philo);
-		wait_action(philo, philo->time_to_sleep);
+		wait_action(philo, philo->time_to_sleep * 1000);
 		philo_think(philo);
 	}
 	return (NULL);
