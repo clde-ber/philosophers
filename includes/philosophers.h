@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 12:41:53 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/07 12:51:23 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 18:05:32 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_philo
 	unsigned long	eat_count;
 	unsigned long	time_cmp;
 	unsigned long	cumul_time;
+	unsigned long	diff;
 	t_data			*data;
 }			t_philo;
 

@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:23 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/07 12:54:26 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:54:09 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 int	single_philo_dies(t_philo *philo)
 {
-	int	ret;
-
-	ret = 0;
 	pthread_mutex_lock(&philo->data->die_mutex);
 	philo->data->died = 1;
 	pthread_mutex_unlock(&philo->data->die_mutex);
-	ret = quit_routine(philo);
-	return (FALSE);
+	return (quit_routine(philo));
 }
 
 int	is_it_dead(t_philo *philo)

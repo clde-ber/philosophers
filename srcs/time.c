@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:39 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/07 13:01:04 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/07 18:05:43 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,21 @@ unsigned long	get_start_time(void)
 void	wait_action(t_philo *philo, unsigned long time)
 {
 	unsigned long	time1;
-	unsigned long	time2;
-	unsigned long	cumul;
+	unsigned long	time2;	
 
-	cumul = 0;
+	philo->diff = 0;
 	pthread_mutex_lock(&philo->data->time_cmp_mutex);
 	time1 = get_timestamp(philo);
 	pthread_mutex_unlock(&philo->data->time_cmp_mutex);
 	pthread_mutex_lock(&philo->data->time_mutex);
 	time2 = get_timestamp(philo);
 	pthread_mutex_unlock(&philo->data->time_mutex);
-	while (cumul < time)
+	while (philo->diff < time)
 	{
 		pthread_mutex_lock(&philo->data->time_mutex);
 		time2 = get_timestamp(philo);
 		pthread_mutex_unlock(&philo->data->time_mutex);
-		cumul = time2 - time1;
+		philo->diff = time2 - time1;
 		usleep(1000);
 	}
 }
