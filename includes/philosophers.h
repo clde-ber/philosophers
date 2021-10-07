@@ -114,7 +114,7 @@ int				quit_routine(t_philo *philo);
 **  routine_utils
 */
 
-void			*single_philo_dies(t_philo *philo);
+int				single_philo_dies(t_philo *philo);
 int				is_it_dead(t_philo *philo);
 void			record_last_meal(t_philo *philo);
 

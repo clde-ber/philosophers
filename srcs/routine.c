@@ -46,6 +46,12 @@ int	philo_eat(t_philo *philo)
 		philo->eat_count++;
 		pthread_mutex_unlock(&philo->data->count_mutex);
 	}
+	else
+	{
+		release_different_forks(philo);
+		wait_action(philo, philo->time_to_die);
+		return (single_philo_dies(philo));
+	}
 	return (TRUE);
 }
 
@@ -68,9 +74,6 @@ int	philo_think(t_philo *philo)
 		print_msg(philo, "%lu milliseconds : philosopher %d is thinking\n");
 		pthread_mutex_unlock(&philo->data->mutex);
 	}
-	else
-		wait_action(philo, (philo->time_to_die - philo->time_to_eat - \
-		philo->time_to_sleep));
 	return (TRUE);
 }
 
@@ -95,8 +98,6 @@ void	*philo_routine(t_philo *philo)
 		philo_sleep(philo);
 		wait_action(philo, philo->time_to_sleep);
 		philo_think(philo);
-		if (philo->philo_number == 1)
-			return (single_philo_dies(philo));
 	}
 	return (NULL);
 }

@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-void	*single_philo_dies(t_philo *philo)
+int	single_philo_dies(t_philo *philo)
 {
 	int	ret;
 
@@ -21,7 +21,7 @@ void	*single_philo_dies(t_philo *philo)
 	philo->data->died = 1;
 	pthread_mutex_unlock(&philo->data->die_mutex);
 	ret = quit_routine(philo);
-	return (NULL);
+	return (FALSE);
 }
 
 int	is_it_dead(t_philo *philo)
