@@ -6,7 +6,7 @@
 /*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:08:04 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/05 15:08:08 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/08 15:52:56 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int	init_structs(t_data **infos, t_philo **philo, char **args)
 	memset(*infos, 0, sizeof(t_data));
 	(*infos)->forks_mutex = malloc(sizeof(pthread_mutex_t) * ft_atoi(args[1]));
 	if (!((*infos)->forks_mutex))
-		return (print_error("Malloc error\n", NULL));
+		return (ERROR);
 	memset((*infos)->forks_mutex, 0, sizeof(pthread_mutex_t) * \
 	ft_atoi(args[1]));
 	*philo = malloc(sizeof(t_philo) * ft_atoi(args[1]));
 	if (!*philo)
-		return (print_error("Malloc error\n", NULL));
+		return (ERROR);
 	memset(*philo, 0, sizeof(t_philo) * ft_atoi(args[1]));
 	return (TRUE);
 }
@@ -33,7 +33,7 @@ int	shared_data(t_data *infos, char **av)
 	infos->start_time = get_start_time();
 	infos->threads = malloc(sizeof(pthread_t) * ft_atoi(av[1]));
 	if (!infos->threads)
-		print_error("Malloc error\n", NULL);
+		return (ERROR);
 	return (TRUE);
 }
 
