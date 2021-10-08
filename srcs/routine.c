@@ -6,7 +6,7 @@
 /*   By: clde-ber <clde-ber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:09:13 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/07 13:02:03 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:29:49 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,15 @@ int	philo_eat(t_philo *philo)
 
 int	philo_sleep(t_philo *philo)
 {
-	if (philo->philo_number > 1 && philo->time_to_die >= philo->time_to_eat \
-	+ philo->time_to_sleep)
+	if (philo->philo_number > 1)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
 		print_msg(philo, "%lu milliseconds : philosopher %d is sleeping\n");
 		pthread_mutex_unlock(&philo->data->mutex);
 	}
-	else
+	if (philo->time_to_die - philo->time_to_eat < philo->time_to_sleep)
 	{
-		wait_action(philo, philo->time_to_die * 1000);
+		wait_action(philo, (philo->time_to_die - philo->time_to_eat) * 1000);
 		return (quit_routine(philo));
 	}
 	return (TRUE);
@@ -74,18 +73,9 @@ int	philo_sleep(t_philo *philo)
 
 int	philo_think(t_philo *philo)
 {
-	if (philo->philo_number > 1 && philo->time_to_die >= philo->time_to_eat \
-	+ philo->time_to_sleep)
-	{
-		pthread_mutex_lock(&philo->data->mutex);
-		print_msg(philo, "%lu milliseconds : philosopher %d is thinking\n");
-		pthread_mutex_unlock(&philo->data->mutex);
-	}
-	else
-	{
-		wait_action(philo, philo->time_to_die * 1000);
-		return (quit_routine(philo));
-	}
+	pthread_mutex_lock(&philo->data->mutex);
+	print_msg(philo, "%lu milliseconds : philosopher %d is thinking\n");
+	pthread_mutex_unlock(&philo->data->mutex);
 	return (TRUE);
 }
 
