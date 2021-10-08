@@ -18,11 +18,10 @@ int	quit_routine(t_philo *philo)
 	|| !philo->nb_of_times_eat)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
-		pthread_mutex_lock(&philo->data->die_mutex);
-		printf("%lu milliseconds : philosopher %d died\n", get_time(philo) \
-		/ 1000, philo->id);
-		philo->data->died = 1;
+		print_msg(philo, "%lu milliseconds : philosopher %d died\n");
 		pthread_mutex_unlock(&philo->data->mutex);
+		pthread_mutex_lock(&philo->data->die_mutex);
+		philo->data->died = 1;
 		pthread_mutex_unlock(&philo->data->die_mutex);
 	}
 	else
@@ -47,33 +46,45 @@ int	philo_eat(t_philo *philo)
 		philo->eat_count++;
 		pthread_mutex_unlock(&philo->data->count_mutex);
 	}
-	else
+	if (philo->philo_number == 1 || philo->time_to_die < philo->time_to_eat)
 	{
 		release_different_forks(philo);
 		wait_action(philo, philo->time_to_die * 1000);
-		return (single_philo_dies(philo));
+		return (quit_routine(philo));
 	}
 	return (TRUE);
 }
 
 int	philo_sleep(t_philo *philo)
 {
-	if (philo->philo_number > 1)
+	if (philo->philo_number > 1 && philo->time_to_die >= philo->time_to_eat \
+	+ philo->time_to_sleep)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
 		print_msg(philo, "%lu milliseconds : philosopher %d is sleeping\n");
 		pthread_mutex_unlock(&philo->data->mutex);
+	}
+	else
+	{
+		wait_action(philo, philo->time_to_die * 1000);
+		return (quit_routine(philo));
 	}
 	return (TRUE);
 }
 
 int	philo_think(t_philo *philo)
 {
-	if (philo->philo_number > 1)
+	if (philo->philo_number > 1 && philo->time_to_die >= philo->time_to_eat \
+	+ philo->time_to_sleep)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
 		print_msg(philo, "%lu milliseconds : philosopher %d is thinking\n");
 		pthread_mutex_unlock(&philo->data->mutex);
+	}
+	else
+	{
+		wait_action(philo, philo->time_to_die * 1000);
+		return (quit_routine(philo));
 	}
 	return (TRUE);
 }
@@ -96,9 +107,11 @@ void	*philo_routine(t_philo *philo)
 			return (NULL);
 		wait_action(philo, philo->time_to_eat * 1000);
 		release_different_forks(philo);
-		philo_sleep(philo);
+		if (philo_sleep(philo) == FALSE)
+			return (NULL);
 		wait_action(philo, philo->time_to_sleep * 1000);
-		philo_think(philo);
+		if (philo_think(philo) == FALSE)
+			return (NULL);
 	}
 	return (NULL);
 }
