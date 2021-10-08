@@ -6,7 +6,7 @@
 /*   By: clde-ber <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:08:04 by clde-ber          #+#    #+#             */
-/*   Updated: 2021/10/08 15:52:56 by clde-ber         ###   ########.fr       */
+/*   Updated: 2021/10/08 15:58:08 by clde-ber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,21 @@ void	link_philos(t_philo *philo, int i)
 int	init_philo(t_philo *philo, t_data *infos, int i, char **av)
 {
 	philo->philo_number = ft_atoi(av[1]);
-	if (!is_number(av[1]) || philo->philo_number <= 0)
+	if (!is_number(av[1]) || (int)philo->philo_number <= 0)
 		return (ERROR);
 	philo->time_to_die = ft_atoi(av[2]);
-	if (!is_number(av[2]) || philo->time_to_die < 0)
+	if (!is_number(av[2]) || (int)philo->time_to_die < 0)
 		return (ERROR);
 	philo->time_to_eat = ft_atoi(av[3]);
-	if (!is_number(av[3]) || philo->time_to_eat < 0)
+	if (!is_number(av[3]) || (int)philo->time_to_eat < 0)
 		return (ERROR);
 	philo->time_to_sleep = ft_atoi(av[4]);
-	if (!is_number(av[4]) || philo->time_to_sleep < 0)
+	if (!is_number(av[4]) || (int)philo->time_to_sleep < 0)
 		return (ERROR);
 	if (av[5])
 	{
 		philo->nb_of_times_eat = ft_atoi(av[5]);
-		if (!is_number(av[5]) || philo->nb_of_times_eat < 0)
+		if (!is_number(av[5]) || (int)philo->nb_of_times_eat < 0)
 			return (ERROR);
 		if (philo->nb_of_times_eat == 0)
 			infos->end = 1;
